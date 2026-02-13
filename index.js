@@ -189,10 +189,29 @@ const info = {
     ],
     testimonials: [
         {
+            image: 'assets/img/testimonials/umer-aziz-dp.jpg',
             name: 'Umer Aziz',
             title: 'Co-Founder Xameer Technologies',
             message: "He's able to quickly identify issues and provide effective solutions. His coding skills are impressive, can write clean and efficient code with a strong understanding of algorithms.",
-        }
+        },
+        {
+            image: 'assets/img/testimonials/mujassir-nasir.png',
+            name: 'Mujassir Nasir',
+            title: 'Full Stack Engineer | Software Architect at Netsol',
+            message: "He profoundly understands software development principles and is always up-to-date with the latest technologies. They are a great team player and have excellent communication skills.",
+        },
+        {
+            image: 'assets/img/testimonials/majeed-ahmad.png',
+            name: 'Majeed Ahmad',
+            title: 'IT&MIS Project Manager and Operations Lead at Bahria Town Pvt Ltd',
+            message: "He has an excellent ability to analyze problems and develop effective solutions that address them. Their attention to detail and thoroughness in testing and debugging have ensured that we have a stable and reliable software system.",
+        },
+        {
+            image: 'assets/img/testimonials/rana-farooq-aslam.png',
+            name: 'Rana Farooq Aslam',
+            title: 'CEO at Fast Services',
+            message: "He is a skilled full stack developer with impressive technical abilities and a remarkable problem-solving capacity. He demonstrated exceptional attention to detail and effective communication skills, offering valuable insights and suggestions that enhanced the project's functionality and aesthetics, always meeting deadlines and budgets.",
+        },
     ],
     skills: [
         {
@@ -308,6 +327,7 @@ document.querySelectorAll("[data-content-testimonials]").forEach((ele, key) => {
     if (!list?.length) return
 
     ele.innerHTML = '';
+    
     list.forEach(l => {
         ele.innerHTML += `
             <div class="swiper-slide">
