@@ -215,23 +215,26 @@ const info = {
     ],
     skills: [
         {
-            "category": "Frontend > Frameworks & Libraries",
+            "category": "Frontend",
             "items": [
                 { "name": "Angular", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Angular-Expert-2ea44f?style=social&logo=angular&logoColor=DD1B16" },
                 { "name": "React", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/React-Expert-2ea44f?style=social&logo=react&logoColor=61DAFB" },
                 { "name": "React Native", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/React%20Native-Advanced-32CD32?style=social&logo=react&logoColor=61DAFB" },
-                { "name": "Next.js", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Next.js-Advanced-32CD32?style=social&logo=nextdotjs&logoColor=000000" },
+                { "name": "Next.js", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/Next.js-Intermediate-32CD32?style=social&logo=nextdotjs&logoColor=000000" },
                 { "name": "Redux / Redux Thunk", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Redux-Expert-2ea44f?style=social&logo=redux&logoColor=764ABC" },
                 { "name": "Redux Toolkit", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Redux%20Toolkit-Expert-2ea44f?style=social&logo=redux&logoColor=764ABC" },
                 { "name": "NgRx", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/NgRx-Expert-2ea44f?style=social&logo=angular&logoColor=DD1B16" },
                 { "name": "TanStack", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/TanStack-Advanced-32CD32?style=social&logoColor=white" },
                 { "name": "Material UI", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Material%20UI-Expert-2ea44f?style=social&logo=mui&logoColor=007FFF" },
                 { "name": "Bootstrap", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Bootstrap-Expert-2ea44f?style=social&logo=bootstrap&logoColor=7952B3" },
-                { "name": "Tailwind", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Tailwind-Expert-2ea44f?style=social&logo=tailwindcss&logoColor=06B6D4" }
+                { "name": "Tailwind", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Tailwind-Expert-2ea44f?style=social&logo=tailwindcss&logoColor=06B6D4" },
+                { "name": "Use Infinite Scroll", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Infinite%20Scroll-Expert-2ea44f?style=social&logoColor=white" },
+                { "name": "Browser Extensions", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Browser%20Extensions-Expert-2ea44f?style=social&logo=googlechrome&logoColor=4285F4" },
+                { "name": "Memory Leaks", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Memory%20Leaks-Expert-2ea44f?style=social&logo=javascript&logoColor=F7DF1E" }
             ]
         },
         {
-            "category": "Backend > Languages & Frameworks",
+            "category": "Backend",
             "items": [
                 { "name": "Node.js", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Node.js-Expert-2ea44f?style=social&logo=nodedotjs&logoColor=339933" },
                 { "name": "Express.js", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Express.js-Expert-2ea44f?style=social&logo=express&logoColor=000000" },
@@ -240,10 +243,30 @@ const info = {
                 { "name": "Hono", "expertise": "Novice", "badge_url": "https://img.shields.io/badge/Hono-Novice-ff4500?style=social&logoColor=white" },
 
                 { "name": "Entity Framework", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Entity%20Framework-Expert-2ea44f?style=social&logo=dotnet&logoColor=512BD4" },
-                { "name": "Mongoose", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Mongoose-Advanced-32CD32?style=social&logo=mongodb&logoColor=47A248" },
-                { "name": "Sequelize", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Sequelize-Advanced-32CD32?style=social&logo=sequelize&logoColor=52B0E7" },
+                { "name": "Mongoose", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/Mongoose-Intermediate-32CD32?style=social&logo=mongodb&logoColor=47A248" },
+                { "name": "Sequelize", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/Sequelize-Intermediate-32CD32?style=social&logo=sequelize&logoColor=52B0E7" },
                 { "name": "Prisma", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Prisma-Expert-2ea44f?style=social&logo=prisma&logoColor=2D3748" },
-                { "name": "TypeORM", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/TypeORM-Expert-2ea44f?style=social&logo=typeorm&logoColor=FF9900" }
+                { "name": "TypeORM", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/TypeORM-Expert-2ea44f?style=social&logo=typeorm&logoColor=FF9900" },
+                { "name": "RabbitMQ", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/RabbitMQ-Advanced-32CD32?style=social&logo=rabbitmq&logoColor=FF6600" },
+                { "name": "Kafka", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Kafka-Advanced-32CD32?style=social&logo=apachekafka&logoColor=231F20" },
+                { "name": "Morgan", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Morgan-Expert-2ea44f?style=social&logo=nodedotjs&logoColor=339933" },
+                { "name": "Node Cache", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Node%20Cache-Expert-2ea44f?style=social&logo=nodedotjs&logoColor=339933" },
+                { "name": "DataLoader", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/DataLoader-Expert-2ea44f?style=social&logo=graphql&logoColor=E10098" }
+            ]
+        },
+        {
+            "category": "Tools, Testing & Validation",
+            "items": [
+                { "name": "Unit Testing", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Unit%20Testing-Expert-2ea44f?style=social&logo=jest&logoColor=C21325" },
+                { "name": "Fluent Validation", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Fluent%20Validation-Expert-2ea44f?style=social&logo=dotnet&logoColor=512BD4" },
+                { "name": "Postman", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Postman-Expert-2ea44f?style=social&logo=postman&logoColor=FF6C37" },
+                { "name": "Swagger", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Swagger-Expert-2ea44f?style=social&logo=swagger&logoColor=85EA2D" },
+                { "name": "SonarQube", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/SonarQube-Expert-2ea44f?style=social&logo=sonarqube&logoColor=4E9BCD" },
+                { "name": "Splunk", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Splunk-Expert-2ea44f?style=social&logoColor=000000" },
+                { "name": "Serilog", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Serilog-Expert-2ea44f?style=social&logoColor=white" },
+                { "name": "DataDog", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/DataDog-Advanced-32CD32?style=social&logo=datadog&logoColor=632CA6" },
+                { "name": "New Relic", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/New%20Relic-Advanced-32CD32?style=social&logo=newrelic&logoColor=00AC69" },
+                { "name": "Grafana k6", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Grafana%20k6-Expert-2ea44f?style=social&logo=grafana&logoColor=F46800" }
             ]
         },
         {
@@ -255,8 +278,8 @@ const info = {
                 { "name": "PostgreSQL", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/PostgreSQL-Expert-2ea44f?style=social&logo=postgresql&logoColor=4169E1" },
                 { "name": "SQLite", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/SQLite-Expert-2ea44f?style=social&logo=sqlite&logoColor=003B57" },
 
-                { "name": "MongoDB", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/MongoDB-Expert-2ea44f?style=social&logo=mongodb&logoColor=47A248" },
-                { "name": "Firebase (Firestore / Realtime DB)", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Firebase-Expert-2ea44f?style=social&logo=firebase&logoColor=DD2C00" },
+                { "name": "MongoDB", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/MongoDB-Intermediate-2ea44f?style=social&logo=mongodb&logoColor=47A248" },
+                { "name": "Firebase (Firestore / Realtime DB)", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/Firebase-Intermediate-2ea44f?style=social&logo=firebase&logoColor=DD2C00" },
                 { "name": "IndexedDB", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/IndexedDB-Expert-2ea44f?style=social&logoColor=white" }
             ]
         },
@@ -284,21 +307,26 @@ const info = {
             ]
         },
         {
-            "category": "AI & LLM",
+            "category": "AI, LLM & API Integrations",
             "items": [
                 { "name": "Cloud Speech-to-Text & Text-to-Speech", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Speech--to--Text%20%26%20TTS-Advanced-32CD32?style=social&logo=googlecloud&logoColor=4285F4" },
-                { "name": "LLM Integration (Cloud)", "expertise": "Beginner", "badge_url": "https://img.shields.io/badge/LLM%20Integration-Beginner-ffcc00?style=social&logoColor=white" },
-                { "name": "N8N Automation", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/N8N-Expert-2ea44f?style=social&logo=n8n&logoColor=FF6C00" },
-                { "name": "AI Chatbot / RAG AI", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/AI%20Chatbot%20%26%20RAG-Expert-2ea44f?style=social&logoColor=white" }
+                { "name": "LLM Integration (Cloud)", "expertise": "Intermediate", "badge_url": "https://img.shields.io/badge/LLM%20Integration-Intermediate-ffcc00?style=social&logoColor=white" },
+                { "name": "N8N Automation", "expertise": "Advance", "badge_url": "https://img.shields.io/badge/N8N-Advance-2ea44f?style=social&logo=n8n&logoColor=FF6C00" },
+                { "name": "AI Chatbot / RAG AI", "expertise": "Advance", "badge_url": "https://img.shields.io/badge/AI%20Chatbot%20%26%20RAG-Advance-2ea44f?style=social&logoColor=white" },
+                { "name": "Whatsapp API", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/WhatsApp%20API-Expert-2ea44f?style=social&logo=whatsapp&logoColor=25D366" },
+                { "name": "PayPal", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/PayPal-Expert-2ea44f?style=social&logo=paypal&logoColor=00457C" },
+                { "name": "Stripe", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Stripe-Expert-2ea44f?style=social&logo=stripe&logoColor=008CDD" },
+                { "name": "Odoo API", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Odoo%20API-Expert-2ea44f?style=social&logo=odoo&logoColor=714B67" }
+
             ]
         },
         {
-            "category": "Protocols",
+            "category": "Tools & Utilities",
             "items": [
-                { "name": "HTTP", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/HTTP-Expert-2ea44f?style=social&logoColor=white" },
-                { "name": "gRPC", "expertise": "Novice", "badge_url": "https://img.shields.io/badge/gRPC-Novice-ff4500?style=social&logo=grpc&logoColor=244C5A" },
-                { "name": "GraphQL", "expertise": "Beginner", "badge_url": "https://img.shields.io/badge/GraphQL-Beginner-ffcc00?style=social&logo=graphql&logoColor=E10098" },
-                { "name": "tRPC", "expertise": "Novice", "badge_url": "https://img.shields.io/badge/tRPC-Novice-ff4500?style=social&logoColor=white" }
+                { "name": "Jira", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Jira-Expert-2ea44f?style=social&logo=jira&logoColor=0052CC" },
+                { "name": "Confluence", "expertise": "Expert", "badge_url": "https://img.shields.io/badge/Confluence-Expert-2ea44f?style=social&logo=confluence&logoColor=172B4D" },
+                { "name": "GitBook", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/GitBook-Advanced-32CD32?style=social&logo=gitbook&logoColor=3884FF" },
+                { "name": "Notion", "expertise": "Advanced", "badge_url": "https://img.shields.io/badge/Notion-Advanced-32CD32?style=social&logo=notion&logoColor=000000" }
             ]
         },
     ]
@@ -327,7 +355,7 @@ document.querySelectorAll("[data-content-testimonials]").forEach((ele, key) => {
     if (!list?.length) return
 
     ele.innerHTML = '';
-    
+
     list.forEach(l => {
         ele.innerHTML += `
             <div class="swiper-slide">
