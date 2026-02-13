@@ -1222,3 +1222,6 @@ section {
 #footer .credits {
   font-size: 13px;
 }
+.skill-image img {
+  height: 1.5rem;
+}

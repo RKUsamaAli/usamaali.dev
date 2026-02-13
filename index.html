@@ -28,11 +28,9 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
 </head>
 
 <body>
-
   <!-- ======= Mobile nav toggle button ======= -->
   <!-- <button type="button" class="mobile-nav-toggle d-xl-none"><i class="bi bi-list mobile-nav-toggle"></i></button> -->
   <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
@@ -43,9 +41,9 @@
       <ul>
         <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
         <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>About</span></a></li>
-        <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
         <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a>
         </li>
+        <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>Resume</span></a></li>
         <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Services</span></a></li>
         <li><a href="#contact" class="nav-link scrollto"><i class="bx bx-envelope"></i> <span>Contact</span></a></li>
       </ul>
@@ -56,18 +54,13 @@
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex flex-column justify-content-center">
     <div class="container" data-aos="zoom-in" data-aos-delay="100">
-      <h1>Usama Ali</h1>
-      <p>I'm <span class="typed"
-          data-typed-items="Software Engineer, .NET & Angular Full Stack Software Engineer, Website Developer, Microservices, Azure, Docker"></span>
+      <h1 data-content-text="name"></h1>
+      <p>I'm <span data-content-text="title" class="typed" data-typed-items="title"></span>
       </p>
       <div class="social-links">
-        <a href="mailto:ua@usamaali.dev" class="envelope"><i class='bx bxs-envelope'></i></a>
-        <a href="https://www.linkedin.com/in/imusamaali" class="linkedin" target="_blank"><i
-            class="bx bxl-linkedin"></i></a>
-        <a href="https://www.facebook.com/im.usamaali" target="_blank" class="facebook"><i
-            class="bx bxl-facebook"></i></a>
-        <a href="https://api.whatsapp.com/send?phone=923084366435" target="_blank" class="whatsapp"><i
-            class="bx bxl-whatsapp"></i></a>
+        <a data-content-link="emailLink" href="" class="envelope"><i class='bx bxs-envelope'></i></a>
+        <a data-content-link="linkedIn" href="" class="linkedin" target="_blank"><i class="bx bxl-linkedin"></i></a>
+        <a data-content-link="whatsapp" href="" target="_blank" class="whatsapp"><i class="bx bxl-whatsapp"></i></a>
       </div>
     </div>
   </section><!-- End Hero -->
@@ -79,109 +72,36 @@
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
-          <h2>About</h2>
-          <p class="mb-4">
-            <strong>Experienced Full Stack Software Engineer</strong> with
-            <strong>6+ years of hands-on experience</strong> in designing and developing
-            <strong>scalable, high-performance web applications</strong>. Specialized in building
-            robust backend systems using <strong>.NET Core</strong>, <strong>Node.js</strong>, and
-            <strong>microservices architecture</strong>, with deep expertise in
-            <strong>event-driven systems</strong> leveraging <strong>RabbitMQ</strong> and
-            <strong>Kafka</strong>.
-          </p>
+          <h2 class="text-center">About</h2>
+        </div>
+        <div data-content-html="about"></div>
+    </section><!-- End About Section -->
 
-          <p class="mb-4">
-            Proven track record of delivering <strong>secure, cloud-native applications</strong>
-            using <strong>Microsoft Azure</strong>, <strong>Docker</strong>, and
-            <strong>CI/CD pipelines</strong>, ensuring <strong>high availability</strong>,
-            <strong>performance</strong>, and <strong>cost efficiency</strong>. Strong experience
-            in developing <strong>RESTful APIs</strong>, implementing
-            <strong>synchronous and asynchronous communication</strong>, and optimizing
-            <strong>SQL and NoSQL databases</strong> including <strong>SQL Server</strong>,
-            <strong>PostgreSQL</strong>, and <strong>MongoDB</strong>.
-          </p>
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio section-bg">
+      <div class="container" data-aos="fade-up">
 
-          <p class="mb-4">
-            Equally proficient on the frontend, with hands-on experience in
-            <strong>Angular</strong>, <strong>React</strong>, <strong>TypeScript</strong>, and
-            modern state management solutions. Passionate about writing
-            <strong>clean, testable, and maintainable code</strong> by applying
-            <strong>Clean Architecture</strong>, <strong>Domain-Driven Design (DDD)</strong>,
-            <strong>CQRS</strong>, and <strong>Test-Driven Development (TDD)</strong>.
-          </p>
-
-          <p class="mb-4">
-            <strong>Microsoft Certified: Azure Developer Associate</strong>, with growing experience
-            in <strong>Conversational AI</strong>, <strong>LLMs</strong>, and
-            <strong>AI-powered solutions</strong>. Recognized for strong
-            <strong>leadership</strong>, <strong>mentoring</strong>, and
-            <strong>cross-functional collaboration</strong>, consistently delivering solutions
-            that align with <strong>business goals</strong> and <strong>user needs</strong>.
+        <div class="section-title">
+          <h2>Portfolio</h2>
+          <p>Software is designed on the advanced technologies and created to fulfill the specific needs of our clients,
+            assuring a streamlined and easy experience. Our focus is on developing creative solutions that not only
+            satisfy but overreach the demands of our clients, making the technology perform well.
           </p>
         </div>
 
-        <h3 class="text-center mb-4">Full Stack Software Developer</h3>
-        <div class="row">
-          <div class="col-lg-6">
-            <ul>
-              <li>
-                <p><strong>.NET Core
-                    Development</strong> Building secure, high-performance backend services.</p>
-              </li>
-              <li>
-                <p><strong>Angular/React
-                    Development</strong> Building responsive, modern frontend applications.</p>
-              </li>
-              <li>
-                <p><strong>Microservices
-                    Architecture</strong> Designing scalable, loosely coupled services for complex systems.</p>
-              </li>
-              <li>
-                <p><strong>Web API Development</strong>
-                  Creating RESTful APIs for reliable system communication.</p>
-              </li>
-              <li>
-                <p><strong>Event-Driven
-                    Architecture</strong> Implementing asynchronous messaging with RabbitMQ and Kafka.</p>
-              </li>
-              <li>
-                <p><strong>SQL Server</strong>
-                  Designing, optimizing, and maintaining high-performance relational databases.</p>
-              </li>
-            </ul>
+        <div data-content-list-container="portfolio">
+          <div class="row">
+            <div data-content-list="filter" class="col-lg-12 d-flex justify-content-center" data-aos="fade-up"
+              data-aos-delay="100">
+            </div>
           </div>
-          <div class="col-lg-6">
-            <ul>
-              <li>
-                <p><strong>Asynchronous
-                    Programming</strong> Developing non-blocking, scalable backend services.</p>
-              </li>
-              <li>
-                <p><strong>Clean Architecture &amp;
-                    DDD</strong> Applying structured design principles for maintainable codebases.</p>
-              </li>
-              <li>
-                <p><strong>CQRS Pattern</strong>
-                  Separating read/write operations to improve scalability and performance.</p>
-              </li>
-              <li>
-                <p><strong>Test-Driven Development
-                    (TDD)</strong> Ensuring reliability through automated testing.</p>
-              </li>
-              <li>
-                <p><strong>Docker &amp;
-                    Containerization</strong> Packaging applications for consistent deployment.</p>
-              </li>
-              <li>
-                <p><strong>Azure Cloud
-                    Development</strong> Deploying and managing cloud-native applications on Azure.</p>
-              </li>
-            </ul>
+
+          <div data-content-list="items" class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
           </div>
         </div>
 
       </div>
-    </section><!-- End About Section -->
+    </section><!-- End Portfolio Section -->
 
     <!-- ======= Facts Section ======= -->
     <!-- <section id="facts" class="facts">
@@ -249,7 +169,7 @@
             to achieve success in every project.</p>
         </div>
 
-        <div class="row skills-content">
+        <div data-content-skills="skills" class="row skills-content">
 
           <!-- Languages -->
           <div class="col-lg-4 col-md-6 mb-4">
@@ -262,7 +182,6 @@
                 </div>
               </div>
             </div>
-
             <div class="progress">
               <span class="skill">TypeScript / JavaScript <i class="val">90%</i></span>
               <div class="progress-bar-wrap">
@@ -419,7 +338,7 @@
         <div class="section-title">
           <h2>Resume</h2>
           <p>
-            <strong>Experienced Full Stack Software Engineer</strong> with <strong>5+ years of experience</strong>
+            <strong>Experienced Full Stack Software Engineer</strong> with <strong><span data-content-text="experienceYear"></span>+ years of experience</strong>
             building
             <strong>scalable, high-performance applications</strong> using <strong>.NET Core</strong>,
             <strong>Node.js</strong>, and <strong>microservices architecture</strong>. Skilled in
@@ -574,230 +493,8 @@
         </div>
 
       </div>
-    </section><!-- End Resume Section -->
-
-    <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio section-bg">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Portfolio</h2>
-          <p>Software is designed on the advanced technologies and created to fulfill the specific needs of our clients,
-            assuring a streamlined and easy experience. Our focus is on developing creative solutions that not only
-            satisfy but overreach the demands of our clients, making the technology perform well.
-          </p>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-12 d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
-            <ul id="portfolio-flters">
-              <!-- <li data-filter="*" class="filter-active">All</li> -->
-              <li data-filter=".filter-software" class="filter-active">Softwares</li>
-              <li data-filter=".filter-web">Websites</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-1.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Team Suite (HCMS)</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-1.png" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Team Suite (HCMS)"><i class="bx bx-plus"></i></a>
-                  <a href="projects/team-suite-(human-capital-management-solution).html"
-                    class="portfolio-details-lightbox" data-glightbox="type: external" title="Portfolio Details"><i
-                      class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-2.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>CORN POS</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-2.png" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="CORN POS"><i class="bx bx-plus"></i></a>
-                  <a href="projects/corn-pos.html" class="portfolio-details-lightbox" data-glightbox="type: external"
-                    title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-6.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Vogue (Tailor Shop Application)</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-6.png" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Vogue (Tailor Shop Application)"><i class="bx bx-plus"></i></a>
-                  <a href="projects/vogue-(tailor-shop-application).html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-5-1.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>HIMS (Health Care System)</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-5-1.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="HIMS (Health Care System)"><i class="bx bx-plus"></i></a>
-                  <a href="projects/hims-(health-care-system).html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-3.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Covid Vaccine Registration</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-3.png" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Covid Vaccine Registration"><i class="bx bx-plus"></i></a>
-                  <a href="projects/covid-vaccine-registration.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-software">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/project-4-3.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Dashboard & Analytical Reports</h4>
-                <p>Software</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/project-4-3.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Dashboard & Analytical Report"><i class="bx bx-plus"></i></a>
-                  <a href="projects/dashboard-&-analytical-reports.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Websites -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Noble-Forwarding-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Noble Forwarding</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Noble-Forwarding-thumbnail.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Noble Forwarding"><i class="bx bx-plus"></i></a>
-                  <a href="projects/noble-forwarding.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Platinum-Electrical-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Platinum Electrical</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Platinum-Electrical-thumbnail.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Platinum Electrical"><i class="bx bx-plus"></i></a>
-                  <a href="projects/platinum-electrical.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Bahria-International-Hospital-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Bahria International Hospital</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Bahria-International-Hospital-thumbnail.png"
-                    data-gallery="portfolioGallery" class="portfolio-lightbox" title="Bahria International Hospital"><i
-                      class="bx bx-plus"></i></a>
-                  <a href="projects/bahria-international-hospital.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Primo-Door-Closer-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Primo Door Closer</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Primo-Door-Closer-thumbnail.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Primo Door Closer"><i class="bx bx-plus"></i></a>
-                  <a href="projects/primo-door-closer.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Harisco-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Harisco</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Harisco-thumbnail.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Harisco"><i class="bx bx-plus"></i></a>
-                  <a href="projects/harisco.html" class="portfolio-details-lightbox" data-glightbox="type: external"
-                    title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="assets/img/projects/Learning-One-to-One-thumbnail.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Learning One to One</h4>
-                <p>Website</p>
-                <div class="portfolio-links">
-                  <a href="assets/img/projects/Learning-One-to-One-thumbnail.png" data-gallery="portfolioGallery"
-                    class="portfolio-lightbox" title="Learning One to One"><i class="bx bx-plus"></i></a>
-                  <a href="projects/learning-one-to-one.html" class="portfolio-details-lightbox"
-                    data-glightbox="type: external" title="Portfolio Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Portfolio Section -->
+    </section>
+    <!-- End Resume Section -->
 
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
@@ -954,68 +651,7 @@
         </div>
 
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="500">
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/umer-aziz-dp.jpg" class="testimonial-img" alt="">
-                <h3>Umer Aziz</h3>
-                <h4>Co-Founder Xameer Technologies</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  He's able to quickly identify issues and provide effective solutions. His coding skills are
-                  impressive, can write clean and efficient code with a strong understanding of algorithms.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/mujassir-nasir.png" class="testimonial-img" alt="">
-                <h3>Mujassir Nasir</h3>
-                <h4>Full Stack Engineer | Software Architect at Netsol</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  He profoundly understands software development principles and is always up-to-date with the latest
-                  technologies. They are a great team player and have excellent communication skills.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/majeed-ahmad.png" class="testimonial-img" alt="">
-                <h3>Majeed Ahmad</h3>
-                <h4>IT&MIS Project Manager and Operations Lead at Bahria Town Pvt Ltd</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  He has an excellent ability to analyze problems and develop effective solutions that address them.
-                  Their attention to detail and thoroughness in testing and debugging have ensured that we have a stable
-                  and reliable software system.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="assets/img/testimonials/rana-farooq-aslam.png" class="testimonial-img" alt="">
-                <h3>Rana Farooq Aslam</h3>
-                <h4>CEO at Fast Services</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  He is a skilled full stack developer with impressive technical abilities and a remarkable
-                  problem-solving capacity. He demonstrated exceptional attention to detail and effective communication
-                  skills, offering valuable insights and suggestions that enhanced the project's functionality and
-                  aesthetics, always meeting deadlines and budgets.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-
+          <div data-content-testimonials="testimonials" class="swiper-wrapper">
           </div>
           <div class="swiper-pagination"></div>
         </div>
@@ -1038,19 +674,19 @@
           <div class="address col-lg-4">
             <i class="bi bi-geo-alt"></i>
             <h4>Location:</h4>
-            <p>Lahore, Punjab, Pakistan</p>
+            <p data-content-text="location"></p>
           </div>
 
           <div class="col-lg-4">
             <i class="bi bi-envelope"></i>
             <h4>Email:</h4>
-            <p><a href="mailto:ua@usamaali.dev" style="color: #272829;" class="envelope">ua@usamaali.dev</a></p>
+            <p><a data-content-html="email" data-content-link="emailLink" href="" style="color: #272829;" class="envelope"></a></p>
           </div>
 
           <div class="col-lg-4">
             <i class="bi bi-phone"></i>
             <h4>Call:</h4>
-            <p><a href="tel:+923084366435" style="color: #272829;" class="envelope">+92 308 436 6435</a></p>
+            <p><a  data-content-html="phone" data-content-link="phoneLink" href="" style="color: #272829;" class="envelope"></a></p>
           </div>
 
           <!-- </div> -->
@@ -1094,15 +730,13 @@
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">
-      <h3>Usama Ali</h3>
-      <p>Continuously seeking opportunities to expand my knowledge and stay up-to-date</p>
+      <h3 data-content-text="name"></h3>
+      <p data-content-text="subtitle"></p>
       <div class="social-links">
-        <a href="mailto:ua@usamaali.dev" class="envelope"><i class='bx bxs-envelope'></i></a>
-        <a href="https://www.linkedin.com/in/imusamaali" class="linkedin" target="_blank"><i
+        <a data-content-link="emailLink" href="" class="envelope"><i class='bx bxs-envelope'></i></a>
+        <a data-content-link="linkedIn" href="" class="linkedin" target="_blank"><i
             class="bx bxl-linkedin"></i></a>
-        <a href="https://www.facebook.com/im.usamaali" target="_blank" class="facebook"><i
-            class="bx bxl-facebook"></i></a>
-        <a href="https://api.whatsapp.com/send?phone=923084366435" target="_blank" class="whatsapp"><i
+        <a data-content-link="whatsapp" href="" target="_blank" class="whatsapp"><i
             class="bx bxl-whatsapp"></i></a>
       </div>
       <div class="copyright">
@@ -1116,6 +750,7 @@
       class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
+  <script src="index.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
