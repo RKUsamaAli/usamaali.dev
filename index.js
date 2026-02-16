@@ -452,6 +452,8 @@ function init() {
         ele.click()
     })
 }
+document.title = info.name + ' - ' + info.title
+
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         init()
