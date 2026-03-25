@@ -24,9 +24,11 @@ h5,
 h6 {
   font-family: "Raleway", sans-serif;
 }
+
 .text-justify {
   text-align: justify;
 }
+
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
@@ -1222,6 +1224,31 @@ section {
 #footer .credits {
   font-size: 13px;
 }
+
 .skill-image img {
-  height: 1.5rem;
+  height: 2.5rem;
+}
+
+.skill-name {
+  font-size: .8rem;
+}
+
+.bg-Expert {
+  background-color: #1c5e1f;
+}
+
+.bg-Advanced {
+  background-color: #4caf51;
+}
+
+.bg-Intermediate {
+  background-color: #ffc106;
+}
+
+.bg-Beginner {
+  background-color: #ff9800;
+}
+
+.bg-Novice {
+  background-color: #f44336;
 }
