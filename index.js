@@ -9,7 +9,7 @@ const info = {
     phoneLink: 'tel:+923084366435',
     phone: '+92 308 436 6435',
     location: 'Pakistan',
-    linkedIn: 'https://www.linkedin.com/in/imusamaali',
+    linkedIn: 'https://www.linkedin.com/in/usama-ali-dev',
     whatsapp: 'https://api.whatsapp.com/send?phone=923084366435',
     about: `
         <p class="mb-4 text-center">
@@ -115,76 +115,275 @@ const info = {
     `,
     portfolio: [
         {
-            image: 'assets/img/projects/project-1.png',
-            title: 'Team Suite (HCMS)',
+            images: [
+                '../assets/img/projects/project-1.png',
+                '../assets/img/projects/project-1-1.png',
+                '../assets/img/projects/project-1-2.png',
+                '../assets/img/projects/project-1-3.png',
+                '../assets/img/projects/pp.png',
+            ],
+            title: 'Team Suite (Human Capital Management Solution)',
             type: 'Software',
-            link: 'projects/team-suite-(human-capital-management-solution).html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            Team Suite, is a new-age Human Capital Management Solution combining the strengths of Cloud
+                            and Mobility. Team Suite is a fully scalable HR Solution and aims to change the working
+                            dynamics of the HR department. <br>
+
+                            The ESS system simplifies employee management with web-based and mobile functionality,
+                            including time off and loan requests, HR data management, and performance management. The
+                            system also streamlines payroll management, including employee compensation, taxes,
+                            deductions, benefits tracking, and compliance.<br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>ESS (Employee Self Service) web-based and mobile simplicity with powerful and
+                                    practical features that drive productivity and user satisfaction.</li>
+                                <li>Managing employee time off involves overseeing the process of employees requesting
+                                    vacation days, sick days, and other types of leave, as well as allowing managers to
+                                    approve or deny these requests and tracking the amount of leave taken by each
+                                    employee.</li>
+                                <li>Employees requesting loans and leases, as well as allowing managers to approve or
+                                    deny these requests and tracking the amount of loan or lease taken by each employee.
+                                </li>
+                                <li>HR collecting, storing, maintaining, and using employee personal data in an
+                                    organized and secure manner.</li>
+                                <li>Setting performance goals, providing training and development opportunities,
+                                    conducting performance evaluations, and implementing performance management systems.
+                                </li>
+                                <li>Payroll is calculating, distributing and managing employee compensation, taxes, and
+                                    deductions, including processing paychecks and maintaining accurate records of
+                                    employee compensation and hours worked. It also includes tracking employee benefits
+                                    and complying with legal requirements.</li>
+
+                            </ul>
+                        </div>`,
+            technologies: ['Angular', 'ASP.NET Core', 'SQL Server', 'RabbitMQ', 'Azure'],
+            client: 'Fast Services'
         },
         {
-            image: 'assets/img/projects/project-2.png',
+            images: [
+                "../assets/img/projects/project-2.png",
+                "../assets/img/projects/project-2-4.png",
+                "../assets/img/projects/project-2-5.png",
+                "../assets/img/projects/project-2-1.png",
+                "../assets/img/projects/project-2-2.png",
+                "../assets/img/projects/project-2-3.png",
+                "../assets/img/projects/pp.png",
+            ],
             title: 'CORN POS',
             type: 'Software',
-            link: 'projects/corn-pos.html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            CORN POS is a comprehensive point of sale system in Pakistan, it's Simple, Quick & Scalable.
+                            CORN easy-to-use POS software, covers, all the point-of-sale features you need to grow your
+                            business. Set your business up for success with cloud-based point-of-sale software.<br>
+                            The duties of a business include tracking and managing inventory, handling the sales
+                            process, managing finances, protecting information and assets, and generating reports. These
+                            involve monitoring stock levels, managing customer orders and payments, accounting,
+                            budgeting, and complying with security regulations. Reports provide insight into operations
+                            such as sales, inventory, finance, and security. <br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>Track and manage the inventory of products and materials, including stock levels,
+                                    reorder points, and product information.</li>
+                                <li>Manage the process of selling products including invoices, tracking customer orders
+                                    and payments, and managing sales commissions.</li>
+                                <li>Manage the financial aspects of the organization, including accounting, budgeting,
+                                    forecasting, and financial reporting.</li>
+                                <li>Protect the organization's information and assets, including access control,
+                                    incident management, and compliance with security regulations.</li>
+                                <li>Generate various reports that provide insight into the organization's operations,
+                                    including sales, inventory, financial, and security reports.</li>
+
+                            </ul>
+                        </div>`,
+            technologies: ['React', '.NET Core', 'MSSQL', 'PWA', 'Azure'],
+            client: 'Fast Services'
         },
         {
-            image: 'assets/img/projects/project-6.png',
-            title: 'Vogue (Tailor Shop Application)',
+            images: [
+                "../assets/img/projects/project-6.png",
+                "../assets/img/projects/project-6-1.png",
+                "../assets/img/projects/project-6-2.png",
+                "../assets/img/projects/project-6-3.png",
+                "../assets/img/projects/pp.png",
+            ],
+            title: 'Vogue (Tailor Shop)',
             type: 'Software',
-            link: 'projects/vogue-(tailor-shop-application).html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            The garment ordering application allows customers to select multiple articles in different
+                            sizes and styles, with QR codes for inventory tracking. The application can move orders from
+                            one location to another, while its API-based functionality enables sharing of data between
+                            different systems. The application also offers multi-role and multi-user functionality for
+                            secure access. <br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>This application is designed to take orders for garments of multiple sizes and
+                                    styles. It allows customers to select multiple articles, in different sizes and
+                                    styles, and add them to their order.</li>
+                                <li>This application has the capability to generate QR codes for each article, allowing
+                                    users to scan them. This also is used for inventory management or for tracking the
+                                    movement of the garments in the warehouse or in the store.</li>
+                                <li>This application has the ability to move orders from one location, such as a
+                                    warehouse or retail store, to another location, such as a different warehouse or
+                                    retail store.</li>
+                                <li>This application API (Application Programming Interface) base functionality defines
+                                    how the system can be accessed and used, providing a consistent way for other
+                                    systems to interact with it. This enables the sharing of data and functionality
+                                    between different systems.</li>
+                                <li>Multi-role-based and multi-user functionality in an application allows for multiple
+                                    roles and users support. This enables different users to access the system with
+                                    varying permissions and capabilities, according to their assigned roles.</li>
+
+                            </ul>
+                        </div>`,
+            technologies: ['React', 'Node.js', 'MSSQL'],
+            client: 'Fast Services'
         },
         {
-            image: 'assets/img/projects/project-5-1.png',
-            title: 'HIMS (Health Care System)',
+            images: [
+                "../assets/img/projects/project-5.png",
+                "../assets/img/projects/project-5-1.png",
+                "../assets/img/projects/project-5-2.png",
+                "../assets/img/projects/pp.png",
+            ],
+            title: 'HIMS (Health Care)',
             type: 'Software',
-            link: 'projects/hims-(health-care-system).html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            A patient registration system is used to maintain demographic information of patients. The
+                            emergency/triage module is used to manage emergency patients. The outpatient department
+                            manages scheduling and treatment of non-hospitalized patients. The system also manages
+                            billing, inventory, sale/purchase/POS transactions, and security with a dashboard for
+                            performance indicators.<br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>Patient Registration System is used to register new patients and maintain their
+                                    demographic information.</li>
+                                <li>Emergency/Triage Module is used to manage the triage and treatment of emergency
+                                    patients.</li>
+                                <li>Outpatient Department is used to manage the scheduling and treatment of patients who
+                                    are not hospitalized.</li>
+                                <li>Billing is used to manage the billing and financial aspects of patient care.</li>
+                                <li>Inventory is used to manage the inventory of medical supplies and equipment.</li>
+                                <li>Sale, Purchase & POS Module is used to manage the Sale, Purchase and point of Sale
+                                    Transactions.</li>
+                                <li>Dashboard is used to provide an overview of the system and key performance
+                                    indicators.</li>
+                                <li>Security refers to the measures put in place to protect the system and the data it
+                                    contains from unauthorized access or breaches.</li>
+
+                            </ul>
+                        </div>`,
+            technologies: ['Angular', '.Net Core', 'Oracle', 'Kafka'],
+            client: 'Densible'
         },
         {
-            image: 'assets/img/projects/project-3.png',
+            images: [
+                "../assets/img/projects/project-3.png",
+                "../assets/img/projects/project-3-1.png",
+                "../assets/img/projects/project-3-2.png",
+                "../assets/img/projects/pp.png",
+            ],
             title: 'Covid Vaccine Registration',
             type: 'Software',
-            link: 'projects/covid-vaccine-registration.html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            The system allows for user registration for Covid-19 vaccination and scheduling of
+                            vaccination appointments. It also has API-based functionality to communicate with three
+                            different hospital software systems and share analytical statistics.<br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>This system includes functionality for user registration for Covid-19 vaccination,
+                                    allowing individuals to sign up for and schedule their vaccination appointments.
+                                </li>
+                                <li>API (Application Programming Interface) based functionality allows for interaction
+                                    with three different hospital software systems. It facilitates communication between
+                                    them and the sharing of organizational analytical statistics.</li>
+
+                            </ul>
+                        </div>`,
+            technologies: ['React', 'Node.js', 'MSSQL'],
+            client: 'Densible'
         },
         {
-            image: 'assets/img/projects/project-4-3.png',
+            images: [
+                "../assets/img/projects/project-4-3.png",
+                "../assets/img/projects/project-4.png",
+                "../assets/img/projects/project-4-1.png",
+                "../assets/img/projects/project-3-2.png",
+                "../assets/img/projects/project-4-2.png",
+                "../assets/img/projects/pp.png",
+            ],
             title: 'Dashboard & Analytical Reports',
             type: 'Software',
-            link: 'projects/dashboard-&-analytical-reports.html',
+            descriptionHTML: `<div class="portfolio-description text-justify">
+                            The system integrates with three hospital databases and supports multiple databases within
+                            one application. It uses a separate database for secure access and allows for communication
+                            between hospital software systems. It also has multi-role and multi-user functionality for
+                            varying access permissions. <br>
+                            <strong>Features</strong>
+                            <ul>
+                                <li>This system is integrated with the Oracle databases of three different hospitals,
+                                    enabling the use of dashboard data for analysis and reporting.</li>
+                                <li>This system is configured to support multiple databases within a single application,
+                                    allowing for seamless integration and access to multiple data sources.</li>
+                                <li>This system uses a second database for application authorization, ensuring secure
+                                    access to the application and its functionality.</li>
+                                <li>API (Application Programming Interface) based functionality allows for interaction
+                                    with three different hospital software systems. It facilitates communication between
+                                    them and the sharing of organisational analytical statistics.</li>
+                                <li>Multi-role-based and multi-user functionality in an application allows for multiple
+                                    roles and users support. This enables different users to access the system with
+                                    varying permissions and capabilities, according to their assigned roles.</li>
+                            </ul>
+                        </div>`,
+            technologies: ['React Js', 'Node Js', 'MySQL'],
+            client: 'Densible'
         },
         {
-            image: 'assets/img/projects/Noble-Forwarding-thumbnail.png',
+            images: ['../assets/img/projects/Noble-Forwarding.png'],
             title: 'Noble Forwarding',
             type: 'Website',
-            link: 'projects/noble-forwarding.html',
+            descriptionHTML: `A professional corporate website for Noble Forwarding, showcasing their logistics and freight forwarding services with a modern, responsive design.`,
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'Tailwind'],
+            client: 'Noble Forwarding'
         },
         {
-            image: 'assets/img/projects/Platinum-Electrical-thumbnail.png',
+            images: ['../assets/img/projects/Platinum-Electrical.png'],
             title: 'Platinum Electrical',
             type: 'Website',
-            link: 'projects/platinum-electrical.html',
+            descriptionHTML: `A professional corporate website for Platinum Electrical, showcasing their electrical services with a modern, responsive design.`,
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
+            client: 'Platinum Electrical'
         },
         {
-            image: 'assets/img/projects/Bahria-International-Hospital-thumbnail.png',
-            title: 'Bahria International Hospital',
+            images: ['../assets/img/projects/Bahria-International-Hospital.png'],
+            title: 'Bahria Hospital',
             type: 'Website',
-            link: 'projects/bahria-international-hospital.html',
+            descriptionHTML: `A professional corporate website for Bahria International Hospital, showcasing their medical services with a modern, responsive design.`,
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
+            client: 'Bahria International Hospital'
         },
         {
-            image: 'assets/img/projects/Primo-Door-Closer-thumbnail.png',
+            images: ['../assets/img/projects/Primo-Door-Closer.png'],
             title: 'Primo Door Closer',
             type: 'Website',
-            link: 'projects/primo-door-closer.html',
+            descriptionHTML: `A professional corporate website for Primo Door Closer, showcasing their products with a modern, responsive design.`,
+            technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap'],
+            client: 'Primo'
         },
         {
-            image: 'assets/img/projects/Harisco-thumbnail.png',
+            images: ['../assets/img/projects/Harisco.png'],
             title: 'Harisco',
             type: 'Website',
-            link: 'projects/harisco.html',
+            descriptionHTML: `A modern website for Harisco, focusing on their product range and corporate identity with a clean and professional layout.`,
+            technologies: ['HTML5', 'SCSS', 'JavaScript'],
+            client: 'Harisco'
         },
         {
-            image: 'assets/img/projects/Learning-One-to-One-thumbnail.png',
+            images: ['../assets/img/projects/Learning-One-to-One.png'],
             title: 'Learning One to One',
             type: 'Website',
-            link: 'projects/learning-one-to-one.html',
+            descriptionHTML: `An educational platform designed for one-to-one learning experiences, featuring course listings and student resources.`,
+            technologies: ['React', 'Node Js', 'MySQL'],
+            client: 'Learning O2O'
         },
     ],
     testimonials: [
@@ -440,6 +639,102 @@ document.querySelectorAll("[data-content-list-container]").forEach((ele, key) =>
           </div>        `
     })
 })
+
+
+document.querySelectorAll("[data-content-projects]").forEach(async (ele) => {
+    const eleKey = ele.getAttribute('data-content-projects');
+    const list = info[eleKey];
+    if (!list?.length) return;
+
+    ele.innerHTML = '<div class="col-12 text-center p-5"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted">Curating project masterpieces...</p></div>';
+
+    ele.innerHTML = '';
+    list.forEach((project, index) => {
+        const techHtml = project.technologies?.map(t => `<span class="tech-tag">${t}</span>`).join('') || '';
+        const carouselImages = project.images.length > 0 ? project.images : [project.images];
+        const swiperSlides = carouselImages?.map(img => `<div class="swiper-slide"><img src="${img}" alt="${project.title}"></div>`).join('');
+
+        ele.innerHTML += `
+        <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
+            <div class="project-card">
+                <div class="project-media">
+                    <span class="project-badge">${project.type}</span>
+                    <div class="project-carousel swiper" id="swiper-${index}">
+                        <div class="swiper-wrapper">
+                            ${swiperSlides}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3 class="project-title">${project.title}</h3>
+                        <div class="project-meta">
+                            <div class="meta-item">
+                                <i class="bx bxs-user-detail"></i>
+                                <span>${project.client || 'Personal Project'}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="bx bx-category"></i>
+                                <span>${project.type}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="desc-${index}" class="project-description collapsed">
+                        ${project.descriptionHTML}
+                    </div>
+                    
+                    <button class="toggle-desc-btn" onclick="toggleProjectDescription(${index}, this)">
+                        <span>Show More</span>
+                        <i class="bx bx-chevron-down"></i>
+                    </button>
+
+                    <div class="project-tech-stack">
+                        ${techHtml}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    setTimeout(() => {
+        list.forEach((_, index) => {
+            new Swiper(`#swiper-${index}`, {
+                speed: 600,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false
+                },
+                slidesPerView: 'auto',
+                pagination: {
+                    el: `#swiper-${index} .swiper-pagination`,
+                    type: 'bullets',
+                    clickable: true
+                }
+            });
+        });
+    }, 200);
+});
+
+window.toggleProjectDescription = function (index, btn) {
+    const desc = document.getElementById(`desc-${index}`);
+    const span = btn.querySelector('span');
+
+    if (desc.classList.contains('collapsed')) {
+        desc.classList.remove('collapsed');
+        desc.classList.add('expanded');
+        span.textContent = 'Show Less';
+        btn.classList.add('active');
+    } else {
+        desc.classList.remove('expanded');
+        desc.classList.add('collapsed');
+        span.textContent = 'Show More';
+        btn.classList.remove('active');
+    }
+}
+
 function init() {
     document.querySelectorAll('.filter-active').forEach(ele => {
         ele.click()
