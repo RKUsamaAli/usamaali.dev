@@ -52,7 +52,7 @@ const info = {
           </p>
         </div>
 
-        <h3 class="text-center mb-4 mt-5">Full Stack Software Developer</h3>
+        <h3 class="text-center mb-4 mt-5">Full Stack Software Engineer</h3>
         <div class="row">
           <div class="col-lg-6">
             <ul>
@@ -396,7 +396,7 @@ const info = {
         {
             image: 'assets/img/testimonials/mujassir-nasir.png',
             name: 'Mujassir Nasir',
-            title: 'Full Stack Engineer | Software Architect at Netsol',
+            title: 'Full Stack Software Engineer | Software Architect at Netsol',
             message: "He profoundly understands software development principles and is always up-to-date with the latest technologies. They are a great team player and have excellent communication skills.",
         },
         {
@@ -409,7 +409,7 @@ const info = {
             image: 'assets/img/testimonials/rana-farooq-aslam.png',
             name: 'Rana Farooq Aslam',
             title: 'CEO at Fast Services',
-            message: "He is a skilled full stack developer with impressive technical abilities and a remarkable problem-solving capacity. He demonstrated exceptional attention to detail and effective communication skills, offering valuable insights and suggestions that enhanced the project's functionality and aesthetics, always meeting deadlines and budgets.",
+            message: "He is a skilled full stack software engineer with impressive technical abilities and a remarkable problem-solving capacity. He demonstrated exceptional attention to detail and effective communication skills, offering valuable insights and suggestions that enhanced the project's functionality and aesthetics, always meeting deadlines and budgets.",
         },
     ],
     skills: [
