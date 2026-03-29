@@ -628,7 +628,7 @@ document.querySelectorAll("[data-content-list-container]").forEach((ele, key) =>
                 <h4>${l.title} </h4>
                 <p>${l.type}</p>
                 <div class="portfolio-links">
-                  <a  href="${l.image}" data-gallery="portfolioGallery" class="portfolio-lightbox"
+                  <a  href="${l.image}"
                     title="${l.title}"><i class="bx bx-plus"></i></a>
                   <a href="${l.link}"
                     class="portfolio-details-lightbox" data-glightbox="type: external" title="Portfolio Details"><i
@@ -653,6 +653,7 @@ document.querySelectorAll("[data-content-projects]").forEach(async (ele) => {
         const techHtml = project.technologies?.map(t => `<span class="tech-tag">${t}</span>`).join('') || '';
         const carouselImages = project.images.length > 0 ? project.images : [project.images];
         const swiperSlides = carouselImages?.map(img => `<div class="swiper-slide"><img src="${img}" alt="${project.title}"></div>`).join('');
+        console.log(swiperSlides);
 
         ele.innerHTML += `
         <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
