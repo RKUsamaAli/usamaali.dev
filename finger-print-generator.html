@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC // Browser Fingerprint Intelligence</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --panel: #141417;
+            --border: #2d2d33;
+            --accent: #00ff9d;
+            --text-main: #e0e0e6;
+            --text-dim: #888891;
+            --warning: #ff4757;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Segoe UI', 'Roboto', monospace;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 1rem 2rem;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-badge {
+            color: var(--accent);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border-left: 2px solid var(--accent);
+            padding-left: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #1e1e21;
+            font-size: 0.85rem;
+        }
+
+        .metric-label {
+            color: var(--text-dim);
+        }
+
+        .metric-value {
+            font-family: 'Consolas', monospace;
+            color: var(--accent);
+            word-break: break-all;
+            text-align: right;
+            max-width: 60%;
+        }
+
+        .hash-tag {
+            font-size: 0.7rem;
+            background: #1e1e21;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #5d5d66;
+        }
+
+        pre {
+            background: #000;
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            overflow-x: auto;
+            color: #70ff70;
+            max-height: 100px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
+
+        /* Controller Styles */
+        .controller-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #1a1a1f 0%, #141417 100%);
+            border: 1px solid var(--accent);
+            padding: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .param-tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 1rem;
+        }
+
+        .param-tag {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: #1e1e21;
+            color: var(--text-dim);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .param-tag.active {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(0, 255, 157, 0.05);
+        }
+
+        .master-id-display {
+            font-family: 'Consolas', monospace;
+            font-size: 2.2rem;
+            color: var(--accent);
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+            text-align: center;
+            padding: 1rem 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            border: 1px dashed rgba(0, 255, 157, 0.2);
+        }
+
+        .match-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+
+        .match-broad {
+            background: #3498db;
+            color: white;
+        }
+
+        .match-precise {
+            background: #e67e22;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div style="font-weight: 900; letter-spacing: 1px;">BROWSER_INTEL // V1.0.4</div>
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            Live System Scanning
+        </div>
+    </header>
+
+    <main id="dashboard">
+        <div class="card controller-card">
+            <div class="card-header">
+                System Specificity Controller // Level: <span id="slider-value-display">100</span>%
+                <span id="match-type-label" class="match-badge match-precise">Precise Match</span>
+            </div>
+
+            <div id="current-id-sig" class="master-id-display">
+                CALCULATING...
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-header">
+                    <span style="font-size: 0.7rem; color: var(--text-dim);">BROAD (Cross-Device/Browser)</span>
+                    <span style="font-size: 0.7rem; color: var(--text-dim);">STRICT (This Session Only)</span>
+                </div>
+                <input type="range" id="specificity-slider" min="0" max="100" value="100">
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <div
+                    style="font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0.5rem; display: flex; justify-content: space-between;">
+                    Active Telemetry Parameters
+                    <span id="param-count">0/0</span>
+                </div>
+                <div id="param-tags" class="param-tag-container">
+                    <!-- Tags will be injected -->
+                </div>
+            </div>
+        </div>
+        <!-- Cards will be injected here -->
+    </main>
+
+    <script>
+        /**
+         * FingerprintScanner
+         * Sophisticated Extraction Engine
+         */
+        class FingerprintScanner {
+            async hash(text) {
+                const msgUint8 = new TextEncoder().encode(text);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
+            }
+
+            async getHardware() {
+                const data = {
+                    deviceMemory: navigator.deviceMemory || 'Unsupported',
+                    hardwareConcurrency: navigator.hardwareConcurrency || 'N/A',
+                    maxTouchPoints: navigator.maxTouchPoints || 0,
+                    platform: navigator.platform || 'N/A',
+                    uaData: 'N/A',
+                    screen: `${screen.width}x${screen.height}`,
+                    colorDepth: screen.colorDepth || 'N/A',
+                    viewport: `${window.innerWidth}x${window.innerHeight}`,
+                    resistance: (window.outerWidth - window.innerWidth > 20) ? 'Probable (Letterboxing)' : 'None',
+                    pixelRatio: window.devicePixelRatio || 1,
+                    orientation: screen.orientation ? screen.orientation.type : 'N/A'
+                };
+
+                if (navigator.userAgentData) {
+                    try {
+                        const highEntropy = await navigator.userAgentData.getHighEntropyValues(['architecture', 'model', 'platformVersion']);
+                        data.uaData = `${highEntropy.platform} (${highEntropy.architecture})`;
+                    } catch (e) {
+                        data.uaData = 'Access Denied';
+                    }
+                } else {
+                    // Fallback for Safari/Firefox/Legacy
+                    const ua = navigator.userAgent;
+                    let platform = "Unknown OS";
+                    if (ua.includes("Macintosh") || ua.includes("Mac OS X")) platform = "macOS";
+                    else if (ua.includes("Windows")) platform = "Windows";
+                    else if (ua.includes("Linux")) platform = "Linux";
+                    else if (ua.includes("Android")) platform = "Android";
+                    else if (ua.includes("iPhone") || ua.includes("iPad")) platform = "iOS";
+
+                    let arch = "Unknown Arch";
+                    if (ua.includes("Win64") || ua.includes("x64") || ua.includes("x86_64")) arch = "x64";
+                    else if (ua.includes("arm64") || ua.includes("arm") || (platform === "macOS" && navigator.maxTouchPoints === 0)) arch = "arm/x64"; // Difficult to be precise via UA
+
+                    data.uaData = `${platform} (${arch})`;
+                }
+
+                // WebGL
+                try {
+                    const canvas = document.createElement('canvas');
+                    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    data.glVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                    data.glRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                } catch (e) { data.glVendor = 'Blocked'; }
+
+                // WebGPU
+                try {
+                    if (navigator.gpu) {
+                        const adapter = await navigator.gpu.requestAdapter();
+                        data.gpuInfo = adapter.architecture || 'WebGPU Enabled (Generic)';
+                    } else { data.gpuInfo = 'Not Supported'; }
+                } catch (e) { data.gpuInfo = 'Error/Permission'; }
+
+                return data;
+            }
+
+            async getGraphics() {
+                const results = {};
+
+                // Canvas 2D
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = 200; canvas.height = 50;
+                    ctx.textBaseline = "top";
+                    ctx.font = "14px 'Arial'";
+                    ctx.textBaseline = "alphabetic";
+                    ctx.fillStyle = "#f60";
+                    ctx.fillRect(125, 1, 62, 20);
+                    ctx.fillStyle = "#069";
+                    ctx.fillText("Fingerprint 1.0 😃", 2, 15);
+                    ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
+                    ctx.fillText("Fingerprint 1.0 😃", 4, 17);
+                    results.canvasHash = await this.hash(canvas.toDataURL());
+                } catch (e) { results.canvasHash = 'Blocked'; }
+
+                // SVG BBox
+                try {
+                    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                    svg.setAttribute("width", "100"); svg.setAttribute("height", "30");
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.textContent = "abcdefghijklmnopqrstuvwxyz";
+                    svg.appendChild(text);
+                    document.body.appendChild(svg);
+                    const bbox = text.getBBox();
+                    results.svgBBox = `${bbox.width.toFixed(2)}x${bbox.height.toFixed(2)}`;
+                    document.body.removeChild(svg);
+                } catch (e) { results.svgBBox = 'Error'; }
+
+                // Audio
+                try {
+                    const context = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100);
+                    const oscillator = context.createOscillator();
+                    oscillator.type = 'triangle';
+                    oscillator.frequency.setValueAtTime(10000, context.currentTime);
+                    const compressor = context.createDynamicsCompressor();
+                    compressor.threshold.setValueAtTime(-50, context.currentTime);
+                    compressor.knee.setValueAtTime(40, context.currentTime);
+                    compressor.ratio.setValueAtTime(12, context.currentTime);
+                    oscillator.connect(compressor);
+                    compressor.connect(context.destination);
+                    oscillator.start(0);
+                    const buffer = await context.startRendering();
+                    const audioData = buffer.getChannelData(0).slice(4400, 4500);
+                    results.audioHash = await this.hash(audioData.join(''));
+                } catch (e) { results.audioHash = 'Blocked/Muted'; }
+
+                return results;
+            }
+
+            getJSEngine() {
+                const results = {};
+
+                // Math Precision
+                results.mathSin = Math.sin(1e10).toString();
+                results.mathCos = Math.cos(1e10).toString();
+
+                // Error Analysis
+                try {
+                    null.f();
+                } catch (e) {
+                    const stack = e.stack || '';
+                    if (stack.includes('at ')) results.engine = 'V8 (Chrome/Edge)';
+                    else if (stack.includes('@')) results.engine = 'JavaScriptCore (Safari)';
+                    else results.engine = 'SpiderMonkey (Firefox)';
+                    results.stackFormat = stack.split('\n')[0];
+                }
+
+                // Prototype Leaks
+                results.webdriver = navigator.webdriver ? 'Detected' : 'Not Present';
+                results.protoProxy = (window.Proxy.toString().length > 40) ? 'Modified' : 'Clean';
+
+                return results;
+            }
+
+            async getPrivacy() {
+                const results = {
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    languages: navigator.languages.join(','),
+                    evalLength: eval.toString().length,
+                    headless: (navigator.webdriver || !navigator.languages.length) ? 'Yes' : 'No'
+                };
+
+                // WebRTC
+                try {
+                    const pc = new RTCPeerConnection({ iceServers: [{ urls: "stun:stun.l.google.com:19302" }] });
+                    pc.createDataChannel("");
+                    const offer = await pc.createOffer();
+                    results.sdpHash = await this.hash(offer.sdp);
+                    pc.close();
+                } catch (e) { results.sdpHash = 'Blocked'; }
+
+                // Intl & PDF
+                try {
+                    results.intlNumber = (new Intl.NumberFormat()).format(123456.78);
+                    results.intlDateTime = (new Intl.DateTimeFormat()).format(new Date());
+                } catch (e) { results.intlNumber = 'Blocked'; }
+                results.pdfViewer = navigator.pdfViewerEnabled ? 'Enabled' : 'Disabled';
+
+                return results;
+            }
+
+            getFonts() {
+                const fontList = ["Calibri", "Roboto", "Helvetica Neue", "Ubuntu", "Consolas"];
+                const detected = [];
+                const canvas = document.createElement("canvas");
+                const context = canvas.getContext("2d");
+                const text = "abcdef0123456789";
+                context.font = "72px monospace";
+                const baselineWidth = context.measureText(text).width;
+
+                fontList.forEach(font => {
+                    context.font = `72px "${font}", monospace`;
+                    if (context.measureText(text).width !== baselineWidth) {
+                        detected.push(font);
+                    }
+                });
+
+                return {
+                    detected: detected.join(', ') || 'None Detected',
+                    systemColor: getComputedStyle(document.body).color
+                };
+            }
+
+            async getNetwork() {
+                const results = { ip: 'Fetching...' };
+                try {
+                    const response = await fetch('https://api64.ipify.org?format=json');
+                    const data = await response.json();
+                    results.ip = data.ip;
+                } catch (e) {
+                    results.ip = 'Blocked/Error';
+                }
+                return results;
+            }
+        }
+
+        /**
+         * Payload Analysis Configuration
+         * Weightage based on cross-browser consistency (same machine, different browsers)
+         */
+        const PAYLOAD_WEIGHTS = {
+            hardware: {
+                deviceMemory: 0, // Set to 0 for cross-browser as it's Chromium-only
+                hardwareConcurrency: 15, // High consistency across all browsers
+                uaData: 10, // Weighted higher now with fallback normalization
+                screen: 15, // Absolute monitor resolution
+                viewport: 2, // Low weight, changes with zoom/resize
+                resistance: 5,
+                glVendor: 12,
+                glRenderer: 12,
+                gpuInfo: 8,
+                platform: 10,
+                maxTouchPoints: 10,
+                colorDepth: 5
+            },
+            network: {
+                ip: 20 // IP is a very strong cross-browser signal
+            },
+            graphics: {
+                canvasHash: 2, // Very low for cross-browser (Rendering engines differ)
+                svgBBox: 2,
+                audioHash: 12 // High consistency (OS-level audio stack)
+            },
+            runtime: {
+                mathSin: 1,
+                mathCos: 1,
+                engine: 0, // 0 for cross-browser (identifies the browser itself)
+                stackFormat: 0,
+                webdriver: 5,
+                protoProxy: 5
+            },
+            privacy: {
+                timezone: 15, // OS level
+                languages: 8, // User preference
+                evalLength: 1,
+                headless: 5,
+                sdpHash: 5
+            },
+            fonts: {
+                detected: 15, // System-level fonts
+                systemColor: 5
+            }
+        };
+
+        /**
+         * Calculates similarity between two payloads based on weights
+         * @param {Object} p1 - First payload
+         * @param {Object} p2 - Second payload
+         * @returns {Number} Similarity score from 0 to 100
+         */
+        // function calculateSimilarity(p1, p2) {
+        //     if (p1.network?.ip == p2.network?.ip && p1.hardware.hardwareConcurrency == p2.hardware.hardwareConcurrency && p1.hardware.screen == p2.hardware.screen) {
+        //         return 100;
+        //     }
+        //     if (p1.network?.ip != p2.network?.ip && p1.hardware.hardwareConcurrency != p2.hardware.hardwareConcurrency && p1.hardware.screen != p2.hardware.screen) {
+        //         return 0;
+        //     }
+        //     if (p1.runtime.mathSin != p2.runtime.mathSin || p1.runtime.mathCos != p2.runtime.mathCos) {
+        //         return 0;
+        //     }
+        //     if (p1.runtime.mathSin == p2.runtime.mathSin
+        //         && p1.runtime.mathCos == p2.runtime.mathCos) {
+        //         if (p1.runtime.webdriver == p2.runtime.webdriver
+        //             && p1.runtime.protoProxy == p2.runtime.protoProxy) {
+        //             return 100;
+        //         }
+        //         if (p1.network.gpuInfo == p2.network.gpuInfo) {
+        //             return 100;
+        //         }
+        //     }
+
+        //     return 0;
+        // }
+        /**
+         * Calculates a similarity score (0-100) between two device fingerprints.
+         */
+        function calculateSimilarity(p1, p2) {
+
+            // With the specific weights of 30 (IP), 20 (Hardware), 20 (Math), 15 (Environment), and 15 (GPU), here is the recommendation table.
+            // This setup is designed to be IP-resilient, meaning if a user moves from Home Wi-Fi to Mobile Data, they still score a 70, which is high enough to recognize them.
+            // Action Recommendation Table
+            // Score	Confidence Level	Likely Scenario	Recommended Action
+            // 85 - 100	Very High	Same user, same device, same location.	Full Trust. Allow auto-login or sensitive actions without extra checks.
+            // 70 - 84	High	Same user, different network. (e.g., switched to a VPN or Mobile Data).	Trust with Notification. Allow access, but maybe send a "New Login" email.
+            // 55 - 69	Medium	Browser Update or Same Device but different browser. (IP and Hardware match, but Math/Env changed).	Soft Challenge. Ask for a "Remember Me" cookie check or a simple CAPTCHA.
+            // 35 - 54	Low	"The Office/Starbucks Effect." Two people on the same Wi-Fi using different computers.	MFA Required. Treat as a new device. Require Password + OTP/Email Code.
+            // 0 - 34	No Match	A completely different person and device.	New User Flow. Standard login and full security protocols.
+            // TODO: Verify Cookie
+            if (!p1 || !p2) return 0;
+
+            // Define weights for different attribute categories
+            // Higher weight = more unique/stable attribute
+            const weights = {
+                ip: 30,                 // High impact, but can change
+                hardware: 20,           // Concurrency + Screen
+                runtimeMath: 20,        // OS/Engine specific (Math.sin/cos)
+                runtimeEnvironment: 15, // Webdriver / ProtoProxy
+                gpu: 15                 // Hardware specific
+            };
+
+            let score = 0;
+            let totalPossible = 0;
+
+            // 1. Network / IP Check
+            totalPossible += weights.ip;
+            if (p1.network?.ip && p1.network?.ip === p2.network?.ip) {
+                score += weights.ip;
+                // alert('ip matched');
+            }
+
+            // 2. Hardware Specs (Concurrency & Screen)
+            totalPossible += weights.hardware;
+            const h1 = p1.hardware || {};
+            const h2 = p2.hardware || {};
+            if (h1.hardwareConcurrency === h2.hardwareConcurrency && h1.screen === h2.screen) {
+                score += weights.hardware;
+                // alert('hardware matched');
+            }
+
+            // 3. Runtime Math (Detects OS/Engine rounding differences)
+            totalPossible += weights.runtimeMath;
+            const r1 = p1.runtime || {};
+            const r2 = p2.runtime || {};
+            if (r1.mathSin === r2.mathSin && r1.mathCos === r2.mathCos) {
+                score += weights.runtimeMath;
+                // alert('runtime math matched');
+            } else {
+                // If math doesn't match, it's almost certainly a different OS/Engine
+                // We could even return 0 immediately here if this is a hard requirement
+                return 0;
+            }
+
+            // 4. Bot/Environment Detection (Webdriver/Proxies)
+            totalPossible += weights.runtimeEnvironment;
+            if (r1.webdriver === r2.webdriver && r1.protoProxy === r2.protoProxy) {
+                score += weights.runtimeEnvironment;
+            }
+
+            // 5. GPU Info
+            totalPossible += weights.gpu;
+            if (p1.network?.gpuInfo === p2.network?.gpuInfo) {
+                score += weights.gpu;
+            }
+
+            // Calculate percentage (0 - 100)
+            return Math.round((score / totalPossible) * 100);
+        }
+
+        const STABILITY_THRESHOLDS = {
+            // LEVEL 0: IMMUTABLE HARDWARE (The Foundation - Should never change)
+            "hardware.platform": 0,
+            "hardware.hardwareConcurrency": 0,
+            "hardware.maxTouchPoints": 0,
+            "hardware.pixelRatio": 5, // Zoom level change kar sakta hai but usually stable
+
+            // LEVEL 15: REGIONAL & ENGINE CONSTANTS (Very Stable)
+            "runtime.mathSin": 15,
+            "runtime.mathCos": 15,
+            "privacy.timezone": 18,
+            "privacy.intlNumber": 20,
+            "privacy.languages": 22,
+            "hardware.colorDepth": 23,
+            "privacy.intlDateTime": 25,
+
+            // LEVEL 30: GRAPHICS & GPU (Device Specific)
+            "hardware.glVendor": 30,
+            "hardware.glRenderer": 32,
+            "hardware.gpuInfo": 35,
+            "graphics.audioHash": 38,
+            "fonts.detected": 40,
+            "graphics.canvasHash": 45, // Canvas is usually stable but browser updates can change it
+
+            // LEVEL 50: SEMI-STABLE CONFIG
+            "privacy.pdfViewer": 50,
+            "fonts.systemColor": 55,
+            "graphics.svgBBox": 60,
+
+            // LEVEL 70: NETWORK & CONNECTIVITY (Volatile - Your IP concern)
+            // IP ko niche move kiya gaya hai kyunki yeh restart/airplane mode se badal jata hai
+            "network.ip": 70,
+            "privacy.sdpHash": 75, // WebRTC leak - can change with VPN/Network
+
+            // LEVEL 85+: BOT DETECTION & RUNTIME (Critical for your specific Bot Tool)
+            // Inhe high rakhna chahiye kyunki bots inme aksar fail hote hain
+            "runtime.webdriver": 85,
+            "privacy.headless": 88,
+            "runtime.protoProxy": 90, // Crucial for detecting script injection
+            "privacy.evalLength": 92,
+            "runtime.engine": 94,
+            "runtime.stackFormat": 95,
+
+            // LEVEL 96+: EPHEMERAL (UI/UX based - Changes with interaction)
+            "hardware.uaData": 96,
+            "hardware.deviceMemory": 97, // Browsers often lie about this for privacy
+            "hardware.viewport": 98,    // Window resize se change ho jata hai
+            "hardware.orientation": 99, // Phone tilt se change ho jata hai
+            "hardware.resistance": 100
+        };
+
+        let currentProfile = null;
+        let scannerInstance = new FingerprintScanner();
+
+        async function updateFingerprint() {
+            if (!currentProfile) return;
+
+            const slider = document.getElementById('specificity-slider');
+            const threshold = parseInt(slider.value);
+            document.getElementById('slider-value-display').textContent = threshold;
+
+            const filteredPayload = {};
+            const tagContainer = document.getElementById('param-tags');
+            tagContainer.innerHTML = '';
+            let activeCount = 0;
+            let totalCount = 0;
+
+            // Categorize and filter
+            for (const [path, minThreshold] of Object.entries(STABILITY_THRESHOLDS)) {
+                totalCount++;
+                const [category, key] = path.split('.');
+                const isActive = threshold >= minThreshold;
+
+                if (isActive) activeCount++;
+
+                // Update Tag UI
+                const tag = document.createElement('span');
+                tag.className = `param-tag ${isActive ? 'active' : ''}`;
+                tag.textContent = key;
+                tagContainer.appendChild(tag);
+
+                if (isActive) {
+                    if (!filteredPayload[category]) filteredPayload[category] = {};
+                    filteredPayload[category][key] = currentProfile.payload[category][key];
+                }
+            }
+
+            // Generate Hash
+            const rawString = JSON.stringify(filteredPayload);
+            const hash = await scannerInstance.hash(rawString);
+            document.getElementById('current-id-sig').textContent = hash.toUpperCase();
+
+            // Update Labels
+            const label = document.getElementById('match-type-label');
+            const countDisplay = document.getElementById('param-count');
+            countDisplay.textContent = `${activeCount}/${totalCount}`;
+
+            if (threshold < 30) {
+                label.textContent = "Broad Match (High Stability)";
+                label.className = "match-badge match-broad";
+            } else if (threshold < 70) {
+                label.textContent = "Balanced Match";
+                label.className = "match-badge";
+                label.style.background = "#9b59b6";
+            } else {
+                label.textContent = "Precise Match (Strict)";
+                label.className = "match-badge match-precise";
+            }
+
+            // Update UI feedback if master fingerprint changed
+            console.log(`[SPECIFICITY: ${threshold}] New Fingerprint: ${hash}`);
+        }
+
+        async function init() {
+            const scanner = scannerInstance;
+            const dashboard = document.getElementById('dashboard');
+
+            // 1. Gather all data points
+            const hardware = await scanner.getHardware();
+            const graphics = await scanner.getGraphics();
+            const runtime = scanner.getJSEngine();
+            const privacy = await scanner.getPrivacy();
+            const fonts = scanner.getFonts();
+            const network = await scanner.getNetwork();
+
+            // 2. Store profile
+            currentProfile = {
+                payload: { hardware, network, graphics, runtime, privacy, fonts }
+            };
+
+            // 3. Initialize Slider
+            const slider = document.getElementById('specificity-slider');
+            slider.addEventListener('input', updateFingerprint);
+
+            // 4. Initial Run
+            await updateFingerprint();
+
+            // 5. Render Detail Cards
+            const renderCard = (title, data, hashValue = null) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                let rows = '';
+                for (const [k, v] of Object.entries(data)) {
+                    rows += `
+                <div class="metric-row">
+                    <span class="metric-label">${k}</span>
+                    <span class="metric-value">${v}</span>
+                </div>`;
+                }
+                card.innerHTML = `
+            <div class="card-header">
+                ${title}
+                ${hashValue ? `<span class="hash-tag">SIG: ${hashValue}</span>` : ''}
+            </div>
+            ${rows}`;
+                dashboard.appendChild(card);
+            };
+
+            renderCard("01 // Hardware & System", hardware, await scanner.hash(JSON.stringify(hardware)));
+            renderCard("02 // Graphics & Media", graphics, graphics.canvasHash);
+            renderCard("03 // JS Engine & Runtimes", runtime);
+            renderCard("04 // Privacy & Automation", privacy);
+            renderCard("05 // CSS & DOM Probing", fonts);
+            renderCard("06 // Network Telemetry", network);
+
+            console.group("SECURITY_OPERATIONS_CENTER: System Initialized");
+            console.log("BASE_PAYLOAD:", currentProfile.payload);
+            console.groupEnd();
+        }
+        // Start Execution
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+
+</html>
