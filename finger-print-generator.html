@@ -541,38 +541,6 @@
             }
         };
 
-        /**
-         * Calculates similarity between two payloads based on weights
-         * @param {Object} p1 - First payload
-         * @param {Object} p2 - Second payload
-         * @returns {Number} Similarity score from 0 to 100
-         */
-        // function calculateSimilarity(p1, p2) {
-        //     if (p1.network?.ip == p2.network?.ip && p1.hardware.hardwareConcurrency == p2.hardware.hardwareConcurrency && p1.hardware.screen == p2.hardware.screen) {
-        //         return 100;
-        //     }
-        //     if (p1.network?.ip != p2.network?.ip && p1.hardware.hardwareConcurrency != p2.hardware.hardwareConcurrency && p1.hardware.screen != p2.hardware.screen) {
-        //         return 0;
-        //     }
-        //     if (p1.runtime.mathSin != p2.runtime.mathSin || p1.runtime.mathCos != p2.runtime.mathCos) {
-        //         return 0;
-        //     }
-        //     if (p1.runtime.mathSin == p2.runtime.mathSin
-        //         && p1.runtime.mathCos == p2.runtime.mathCos) {
-        //         if (p1.runtime.webdriver == p2.runtime.webdriver
-        //             && p1.runtime.protoProxy == p2.runtime.protoProxy) {
-        //             return 100;
-        //         }
-        //         if (p1.network.gpuInfo == p2.network.gpuInfo) {
-        //             return 100;
-        //         }
-        //     }
-
-        //     return 0;
-        // }
-        /**
-         * Calculates a similarity score (0-100) between two device fingerprints.
-         */
         function calculateSimilarity(p1, p2) {
 
             // With the specific weights of 30 (IP), 20 (Hardware), 20 (Math), 15 (Environment), and 15 (GPU), here is the recommendation table.
@@ -648,15 +616,17 @@
         const STABILITY_THRESHOLDS = {
             // LEVEL 0: IMMUTABLE HARDWARE (The Foundation - Should never change)
             "hardware.platform": 0,
-            "hardware.hardwareConcurrency": 0,
             "hardware.maxTouchPoints": 0,
             "hardware.pixelRatio": 5, // Zoom level change kar sakta hai but usually stable
+            "hardware.screen": 7,
+            "hardware.orientation": 9, // Phone tilt se change ho jata hai
 
             // LEVEL 15: REGIONAL & ENGINE CONSTANTS (Very Stable)
             "runtime.mathSin": 15,
             "runtime.mathCos": 15,
             "privacy.timezone": 18,
             "privacy.intlNumber": 20,
+            "hardware.hardwareConcurrency": 21,
             "privacy.languages": 22,
             "hardware.colorDepth": 23,
             "privacy.intlDateTime": 25,
@@ -692,7 +662,6 @@
             "hardware.uaData": 96,
             "hardware.deviceMemory": 97, // Browsers often lie about this for privacy
             "hardware.viewport": 98,    // Window resize se change ho jata hai
-            "hardware.orientation": 99, // Phone tilt se change ho jata hai
             "hardware.resistance": 100
         };
 
