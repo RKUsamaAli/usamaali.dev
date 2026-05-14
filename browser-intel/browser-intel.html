@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Intelligence SDK - Fingerprint</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.7);
+            --surface-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-color: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--surface-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .hash-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.5rem;
+        }
+
+        .hash-label {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .hash-display {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--surface-border);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.25rem;
+            word-break: break-all;
+            width: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .hash-display:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .hash-display.loading {
+            color: var(--text-secondary);
+            text-shadow: none;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.6;
+            }
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.2s, top 0.2s;
+            pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            text-shadow: none;
+        }
+
+        .hash-display.copied .copy-tooltip {
+            opacity: 1;
+            top: -40px;
+        }
+
+        .code-section {
+            margin-top: 1rem;
+        }
+
+        .code-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .code-block-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--surface-border);
+            background: rgba(15, 23, 42, 0.9);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--surface-border);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-copy {
+            background: transparent;
+            border: 1px solid var(--surface-border);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        pre {
+            margin: 0;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            line-height: 1.5;
+        }
+
+        .token.comment {
+            color: #64748b;
+        }
+
+        .token.keyword {
+            color: #c678dd;
+        }
+
+        .token.string {
+            color: #98c379;
+        }
+
+        .token.function {
+            color: #61afef;
+        }
+
+        .token.number {
+            color: #d19a66;
+        }
+
+        .token.operator {
+            color: #56b6c2;
+        }
+
+        .token.punctuation {
+            color: #abb2bf;
+        }
+
+        @media (max-width: 640px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .hash-display {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Browser Intelligence SDK</h1>
+            <p>Advanced device fingerprinting and identification</p>
+        </div>
+
+        <div class="card">
+            <div class="hash-section">
+                <div class="hash-label">Your Unique Device Identifier</div>
+                <div class="hash-display loading" id="hashContainer" onclick="copyHash()">
+                    <span class="copy-tooltip" id="hashTooltip">Copied!</span>
+                    <span id="hashValue">Generating fingerprint...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card code-section">
+            <h2>How to use in your application</h2>
+            <div class="code-block-wrapper">
+                <div class="code-header">
+                    <span>Integration Example (JavaScript)</span>
+                    <button class="btn-copy" onclick="copyCode(this)" id="copyCodeBtn">Copy Code</button>
+                </div>
+                <pre><code class="language-javascript"><span class="token comment">// 1. Include the SDK script in your HTML</span>
+<span class="token comment">// &lt;script src="https://usamaali.dev/browser-intel/browser-intel-sdk.minify.v1.js"&gt;&lt;/script&gt;</span>
+
+<span class="token comment">// 2. Initialize and get the fingerprint</span>
+<span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Initialize the SDK</span>
+    <span class="token keyword">const</span> sdk <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BrowserIntelSDK</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">await</span> sdk<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Specify stability threshold (0-100)</span>
+    <span class="token comment">// Lower means more stable/less unique, higher means less stable/more unique</span>
+    <span class="token keyword">const</span> thresholdValue <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span> 
+    
+    <span class="token comment">// Generate fingerprint</span>
+    <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token keyword">await</span> sdk<span class="token punctuation">.</span><span class="token function">getFingerprint</span><span class="token punctuation">(</span>thresholdValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// Access the generated hash</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Device Fingerprint:"</span><span class="token punctuation">,</span> result<span class="token punctuation">.</span>hash<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    
+    <span class="token comment">// Access the raw data payload</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Raw Payload:"</span><span class="token punctuation">,</span> result<span class="token punctuation">.</span>payload<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include the local SDK for demonstration on this page -->
+    <script src="https://usamaali.dev/browser-intel/browser-intel-sdk.minify.v1.js"></script>
+    <script>
+        let currentHash = '';
+
+        // Generate fingerprint on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const hashValueEl = document.getElementById('hashValue');
+                const hashContainer = document.getElementById('hashContainer');
+
+                // Simulate a slight delay for smooth loading UI effect
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                const sdk = new BrowserIntelSDK();
+                await sdk.init();
+
+                const thresholdValue = parseInt(20);
+                const result = await sdk.getFingerprint(thresholdValue);
+
+                currentHash = result.hash;
+                hashValueEl.innerText = currentHash;
+
+                // Remove loading state
+                hashContainer.classList.remove('loading');
+
+                console.log("Fingerprint generated:", result.hash);
+                console.log("Payload:", result.payload);
+            } catch (error) {
+                console.error("Failed to generate fingerprint:", error);
+                document.getElementById('hashValue').innerText = "Error generating fingerprint";
+                document.getElementById('hashContainer').classList.remove('loading');
+            }
+        });
+
+        function copyHash() {
+            if (!currentHash) return;
+
+            navigator.clipboard.writeText(currentHash).then(() => {
+                const container = document.getElementById('hashContainer');
+                container.classList.add('copied');
+                setTimeout(() => {
+                    container.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        function copyCode(btn) {
+            const codeText = `// 1. Include the SDK script in your HTML\n// <script src="https://usamaali.dev/browser-intel/browser-intel-sdk.minify.v1.js"><\\/script>\n\n// 2. Initialize and get the fingerprint\n(async () => {\n    // Initialize the SDK\n    const sdk = new BrowserIntelSDK();\n    await sdk.init();\n\n    // Specify stability threshold (0-100)\n    const thresholdValue = 20; \n    \n    // Generate fingerprint\n    const result = await sdk.getFingerprint(thresholdValue);\n\n    // Access the generated hash\n    console.log("Device Fingerprint:", result.hash);\n})();`;
+
+            navigator.clipboard.writeText(codeText).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                btn.style.color = 'var(--success-color)';
+                btn.style.borderColor = 'var(--success-color)';
+
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.color = '';
+                    btn.style.borderColor = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>
