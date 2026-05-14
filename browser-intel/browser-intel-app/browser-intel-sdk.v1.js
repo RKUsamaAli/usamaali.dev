@@ -328,15 +328,17 @@ class BrowserIntelSDK {
      * @returns {Promise<{hash: string, payload: Object, fullProfile: Object}>}
      */
     async getFingerprint(threshold = 10) {
+        console.log(threshold);
+
         if (!this.profile) {
             await this.init();
         }
 
         // Map 0-10 to 0-100 for internal stability thresholds checking
         let actualThreshold = threshold;
-        if (threshold <= 10) {
-            actualThreshold = threshold * 10;
-        }
+        // if (threshold <= 10) {
+        //     actualThreshold = threshold * 10;
+        // }
 
         const filteredPayload = {};
         for (const [path, minThreshold] of Object.entries(STABILITY_THRESHOLDS)) {

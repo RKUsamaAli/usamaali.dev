@@ -322,7 +322,7 @@
 
     <span class="token comment">// Specify stability threshold (0-100)</span>
     <span class="token comment">// Lower means more stable/less unique, higher means less stable/more unique</span>
-    <span class="token keyword">const</span> thresholdValue <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span> 
+    <span class="token keyword">const</span> thresholdValue <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> 
     
     <span class="token comment">// Generate fingerprint</span>
     <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token keyword">await</span> sdk<span class="token punctuation">.</span><span class="token function">getFingerprint</span><span class="token punctuation">(</span>thresholdValue<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -354,7 +354,7 @@
                 const sdk = new BrowserIntelSDK();
                 await sdk.init();
 
-                const thresholdValue = parseInt(20);
+                const thresholdValue = 5;
                 const result = await sdk.getFingerprint(thresholdValue);
 
                 currentHash = result.hash;
