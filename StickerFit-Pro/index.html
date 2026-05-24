@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StickerFit Pro - Tshirt Sticker Editor</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Fabric JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-workspace: #0f172a;
+            --bg-panel: rgba(30, 41, 59, 0.7);
+            --bg-panel-hover: rgba(30, 41, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+            --accent-purple-glow: rgba(139, 92, 246, 0.35);
+            --accent-cyan: #06b6d4;
+            --accent-cyan-glow: rgba(6, 182, 212, 0.2);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --btn-danger: #ef4444;
+            --btn-danger-hover: #dc2626;
+            --btn-success: #10b981;
+            --btn-success-hover: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+        }
+
+        /* Header Style */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            font-size: 13px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.45) 0%, rgba(6, 182, 212, 0.45) 100%);
+            box-shadow: 0 0 12px var(--accent-purple-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            flex-grow: 1;
+            height: calc(100vh - 81px);
+        }
+
+        /* Sidebar Style */
+        .sidebar {
+            background-color: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-purple);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .control-value {
+            color: var(--accent-cyan);
+            font-family: monospace;
+        }
+
+        /* Custom Drag & Drop / Upload Button */
+        .upload-zone {
+            border: 2px dashed rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(139, 92, 246, 0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.06);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone svg {
+            width: 36px;
+            height: 36px;
+            color: var(--accent-purple);
+            transition: transform 0.3s ease;
+        }
+
+        .upload-zone:hover svg {
+            transform: translateY(-4px);
+        }
+
+        .upload-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .upload-subtext {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Sliders */
+        .slider-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--accent-purple-glow);
+            transition: transform 0.15s, background-color 0.15s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--text-primary);
+        }
+
+        /* Buttons & Actions */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-purple);
+            color: var(--text-primary);
+            box-shadow: 0 4px 14px var(--accent-purple-glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--accent-purple-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .btn-primary:disabled {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--btn-danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background-color: var(--btn-danger-hover);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger:disabled {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            border-color: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background-color: var(--btn-success);
+            color: white;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-success:hover {
+            background-color: var(--btn-success-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:disabled {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            border-color: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+        }
+
+        /* Workspace Pane */
+        .workspace {
+            background-color: var(--bg-workspace);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            overflow: auto;
+            position: relative;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .canvas-container-wrapper {
+            position: relative;
+            border-radius: 16px;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                0 0 80px rgba(139, 92, 246, 0.15);
+            transition: box-shadow 0.5s ease;
+        }
+
+        .canvas-container-wrapper.has-sticker {
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.8),
+                0 0 100px rgba(139, 92, 246, 0.25);
+        }
+
+        canvas {
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--btn-danger);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--btn-success);
+        }
+
+        .toast-icon {
+            font-size: 18px;
+        }
+
+        .toast-content {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            border-radius: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 20;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(139, 92, 246, 0.1);
+            border-top: 3px solid var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+        }
+
+        .loading-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+        }
+
+        .loading-subtext {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hidden Input */
+        #userImg {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                height: auto;
+                overflow-y: visible;
+            }
+
+            .workspace {
+                min-height: 600px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12 2c1.1 0 2 .9 2 2v2.76c2.24.44 4 2.4 4 4.74 0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5c0-1.38-1.12-2.5-2.5-2.5S10 8.12 10 9.5c0 .83-.67 1.5-1.5 1.5S7 10.33 7 9.5c0-2.34 1.76-4.3 4-4.74V4c0-1.1.9-2 2-2zm0 13c-2.76 0-5 2.24-5 5v1h10v-1c0-2.76-2.24-5-5-5z" />
+            </svg>
+            StickerFit Pro
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div class="subtitle">2D Sticker Editor</div>
+        </div>
+    </header>
+
+    <div class="app-container">
+
+        <!-- Sidebar Controls -->
+        <div class="sidebar">
+
+            <!-- Upload Block -->
+            <div class="control-group">
+                <div class="section-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    1. Upload Design
+                </div>
+                <div class="upload-zone" onclick="document.getElementById('userImg').click()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <div class="upload-text">Upload your Sticker</div>
+                    <div class="upload-subtext">Supports PNG, JPG, JPEG</div>
+                </div>
+                <input type="file" id="userImg" accept="image/*">
+            </div>
+
+            <!-- BG Removal Tool -->
+            <div class="control-group">
+                <div class="section-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    2. Background Tool
+                </div>
+                <button id="removeBackground" class="btn btn-primary" disabled>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Remove Background
+                </button>
+            </div>
+
+            <!-- Fine Tuning Sliders -->
+            <div class="control-group">
+                <div class="section-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                    </svg>
+                    3. Fine-Tune Sticker
+                </div>
+
+                <!-- Scale Slider -->
+                <div class="control-group" style="margin-top: 5px;">
+                    <div class="control-label">
+                        <span>Sticker Scale</span>
+                        <span class="control-value" id="scaleVal">--</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="scaleSlider" min="0.05" max="2" step="0.01" value="0.3" disabled>
+                    </div>
+                </div>
+
+                <!-- Rotation Slider -->
+                <div class="control-group" style="margin-top: 5px;">
+                    <div class="control-label">
+                        <span>Rotation</span>
+                        <span class="control-value" id="rotateVal">--</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="rotateSlider" min="0" max="360" step="1" value="0" disabled>
+                    </div>
+                </div>
+
+                <!-- Opacity Slider -->
+                <div class="control-group" style="margin-top: 5px;">
+                    <div class="control-label">
+                        <span>Opacity</span>
+                        <span class="control-value" id="opacityVal">--</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="opacitySlider" min="0" max="1" step="0.01" value="1" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Layer & Object Actions -->
+            <div class="control-group">
+                <div class="section-title">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    4. Sticker Actions
+                </div>
+                <div class="action-grid">
+                    <button id="bringToFront" class="btn btn-secondary" disabled>Bring Front</button>
+                    <button id="sendToBack" class="btn btn-secondary" disabled>Send Back</button>
+                </div>
+                <button id="deleteSticker" class="btn btn-danger" style="margin-top: 10px;" disabled>
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Delete Sticker
+                </button>
+            </div>
+
+            <!-- Save / Download -->
+            <div class="control-group"
+                style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                <button id="downloadDesign" class="btn btn-success">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download Design
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Canvas Workspace -->
+        <div class="workspace">
+            <div class="canvas-container-wrapper" id="canvasWrapper">
+                <canvas id="canvas" width="500" height="600"></canvas>
+
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Removing Background</div>
+                    <div class="loading-subtext">Extracting sticker using AI...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <span id="toastIcon" class="toast-icon"></span>
+        <span id="toastContent" class="toast-content"></span>
+    </div>
+
+    <script>
+        // FABRIC CANVAS
+        const canvas = new fabric.Canvas('canvas');
+        let currentSticker = null;
+        let shirtObject = null;
+
+        // UI references
+        const scaleSlider = document.getElementById('scaleSlider');
+        const rotateSlider = document.getElementById('rotateSlider');
+        const opacitySlider = document.getElementById('opacitySlider');
+        const scaleVal = document.getElementById('scaleVal');
+        const rotateVal = document.getElementById('rotateVal');
+        const opacityVal = document.getElementById('opacityVal');
+
+        const removeBackgroundBtn = document.getElementById('removeBackground');
+        const deleteStickerBtn = document.getElementById('deleteSticker');
+        const bringToFrontBtn = document.getElementById('bringToFront');
+        const sendToBackBtn = document.getElementById('sendToBack');
+        const canvasWrapper = document.getElementById('canvasWrapper');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Notification Helper
+        function showNotification(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const content = document.getElementById('toastContent');
+
+            toast.className = `toast show ${type}`;
+            icon.innerText = type === 'success' ? '✨' : '⚠️';
+            content.innerText = message;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // LOAD TSHIRT
+        fabric.Image.fromURL(
+            '/StickerFit-Pro/tshirt.jpg',
+            function (shirtImg) {
+                shirtImg.scaleToWidth(500);
+                shirtImg.set({
+                    left: 0,
+                    top: 0,
+                    selectable: false,
+                    evented: false
+                });
+                shirtObject = shirtImg;
+                canvas.add(shirtImg);
+                shirtImg.sendToBack();
+                canvas.renderAll();
+                showNotification('T-shirt editor loaded successfully!', 'success');
+            }
+        );
+
+        // Enable / Disable Controls based on Sticker Selection
+        function updateControlsState(activeObject) {
+            const hasSticker = !!activeObject && activeObject !== shirtObject;
+
+            removeBackgroundBtn.disabled = !hasSticker;
+            deleteStickerBtn.disabled = !hasSticker;
+            bringToFrontBtn.disabled = !hasSticker;
+            sendToBackBtn.disabled = !hasSticker;
+
+            scaleSlider.disabled = !hasSticker;
+            rotateSlider.disabled = !hasSticker;
+            opacitySlider.disabled = !hasSticker;
+
+            if (hasSticker) {
+                canvasWrapper.classList.add('has-sticker');
+
+                // Read current values and update UI inputs
+                const scale = activeObject.scaleX.toFixed(2);
+                const angle = Math.round(activeObject.angle);
+                const opacity = activeObject.opacity.toFixed(2);
+
+                scaleSlider.value = scale;
+                scaleVal.innerText = `${scale}x`;
+
+                rotateSlider.value = angle;
+                rotateVal.innerText = `${angle}°`;
+
+                opacitySlider.value = opacity;
+                opacityVal.innerText = `${Math.round(opacity * 100)}%`;
+            } else {
+                canvasWrapper.classList.remove('has-sticker');
+                scaleVal.innerText = '--';
+                rotateVal.innerText = '--';
+                opacityVal.innerText = '--';
+            }
+        }
+
+        // Canvas Selection Events
+        canvas.on('selection:created', (e) => updateControlsState(e.selected[0]));
+        canvas.on('selection:updated', (e) => updateControlsState(e.selected[0]));
+        canvas.on('selection:cleared', () => updateControlsState(null));
+
+        // Sync inputs on object transformations
+        canvas.on('object:scaling', (e) => {
+            if (e.target === currentSticker) {
+                const scale = e.target.scaleX.toFixed(2);
+                scaleSlider.value = scale;
+                scaleVal.innerText = `${scale}x`;
+            }
+        });
+        canvas.on('object:rotating', (e) => {
+            if (e.target === currentSticker) {
+                const angle = Math.round(e.target.angle);
+                rotateSlider.value = angle;
+                rotateVal.innerText = `${angle}°`;
+            }
+        });
+
+        // UPLOAD STICKER
+        document.getElementById('userImg')
+            .addEventListener('change', function () {
+                const file = this.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Remove old sticker if exists
+                    if (currentSticker) {
+                        canvas.remove(currentSticker);
+                    }
+
+                    // Load new image
+                    fabric.Image.fromURL(
+                        e.target.result,
+                        function (img) {
+                            currentSticker = img;
+
+                            // Scale down sticker to initial size
+                            img.scaleToWidth(180);
+
+                            img.set({
+                                left: 160,
+                                top: 200,
+                                cornerColor: '#8b5cf6',
+                                cornerStrokeColor: '#ffffff',
+                                borderColor: '#8b5cf6',
+                                cornerSize: 10,
+                                transparentCorners: false,
+                                borderScaleFactor: 2,
+                                cornerStyle: 'circle'
+                            });
+
+                            canvas.add(img);
+                            canvas.setActiveObject(img);
+                            canvas.renderAll();
+
+                            showNotification('Sticker uploaded! Drag, resize, or rotate it.');
+                        }
+                    );
+                };
+                reader.readAsDataURL(file);
+            });
+
+        // Slider Listeners
+        scaleSlider.addEventListener('input', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                const val = parseFloat(this.value);
+                activeObject.scale(val);
+                scaleVal.innerText = `${val.toFixed(2)}x`;
+                canvas.renderAll();
+            }
+        });
+
+        rotateSlider.addEventListener('input', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                const val = parseInt(this.value);
+                activeObject.set('angle', val);
+                rotateVal.innerText = `${val}°`;
+                canvas.renderAll();
+            }
+        });
+
+        opacitySlider.addEventListener('input', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                const val = parseFloat(this.value);
+                activeObject.set('opacity', val);
+                opacityVal.innerText = `${Math.round(val * 100)}%`;
+                canvas.renderAll();
+            }
+        });
+
+        // Sticker Actions
+        deleteStickerBtn.addEventListener('click', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                canvas.remove(activeObject);
+                currentSticker = null;
+                canvas.discardActiveObject();
+                canvas.renderAll();
+                showNotification('Sticker removed.');
+            }
+        });
+
+        bringToFrontBtn.addEventListener('click', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                activeObject.bringToFront();
+                canvas.renderAll();
+                showNotification('Sticker brought to front.');
+            }
+        });
+
+        sendToBackBtn.addEventListener('click', function () {
+            const activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject !== shirtObject) {
+                activeObject.sendToBack();
+                // Ensure T-shirt background is always at the absolute bottom
+                if (shirtObject) {
+                    shirtObject.sendToBack();
+                }
+                canvas.renderAll();
+                showNotification('Sticker sent to back.');
+            }
+        });
+
+        // BACKGROUND REMOVAL (API)
+        removeBackgroundBtn.addEventListener('click', async function () {
+            const file = document.getElementById('userImg').files[0];
+            if (!file || !currentSticker) {
+                showNotification('Please upload a sticker first.', 'error');
+                return;
+            }
+
+            try {
+                // Show loading overlay
+                loadingOverlay.classList.add('show');
+
+                const formData = new FormData();
+                formData.append('image_file', file);
+
+                const response = await fetch(
+                    'https://api.remove.bg/v1.0/removebg',
+                    {
+                        method: 'POST',
+                        headers: {
+                            'X-Api-Key': '39nH2XMTcoAxnogxmqVBuAXH'
+                        },
+                        body: formData
+                    }
+                );
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text || 'Failed to remove background.');
+                }
+
+                const resultBlob = await response.blob();
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const base64 = e.target.result;
+
+                    // Keep current properties
+                    const props = {
+                        left: currentSticker.left,
+                        top: currentSticker.top,
+                        scaleX: currentSticker.scaleX,
+                        scaleY: currentSticker.scaleY,
+                        angle: currentSticker.angle,
+                        opacity: currentSticker.opacity,
+                        cornerColor: '#8b5cf6',
+                        cornerStrokeColor: '#ffffff',
+                        borderColor: '#8b5cf6',
+                        cornerSize: 10,
+                        transparentCorners: false,
+                        borderScaleFactor: 2,
+                        cornerStyle: 'circle'
+                    };
+
+                    // Remove original sticker
+                    canvas.remove(currentSticker);
+
+                    // Load transparent sticker
+                    fabric.Image.fromURL(
+                        base64,
+                        function (newSticker) {
+                            currentSticker = newSticker;
+                            newSticker.set(props);
+                            canvas.add(newSticker);
+                            canvas.setActiveObject(newSticker);
+                            canvas.renderAll();
+
+                            loadingOverlay.classList.remove('show');
+                            showNotification('Background removed successfully!', 'success');
+                        },
+                        {
+                            crossOrigin: 'anonymous'
+                        }
+                    );
+                };
+
+                reader.readAsDataURL(resultBlob);
+
+            } catch (error) {
+                console.error(error);
+                loadingOverlay.classList.remove('show');
+                showNotification('Background removal failed. Check connection or API limit.', 'error');
+            }
+        });
+
+        // DOWNLOAD DESIGN
+        document.getElementById('downloadDesign').addEventListener('click', function () {
+            // Discard active selection so selection boxes do not show in final image
+            canvas.discardActiveObject();
+            canvas.renderAll();
+
+            // Export canvas as image
+            const dataURL = canvas.toDataURL({
+                format: 'png',
+                quality: 1.0
+            });
+
+            // Create temporary link element and trigger download
+            const link = document.createElement('a');
+            link.download = 'custom-design.png';
+            link.href = dataURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showNotification('Design downloaded successfully!', 'success');
+        });
+    </script>
+</body>
+
+</html>

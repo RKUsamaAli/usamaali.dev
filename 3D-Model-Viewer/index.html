@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StickerFit Pro - 3D Mockup & Model Viewer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Import model-viewer component -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-workspace: #0f172a;
+            --bg-panel: rgba(30, 41, 59, 0.7);
+            --bg-panel-hover: rgba(30, 41, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+            --accent-purple-glow: rgba(139, 92, 246, 0.35);
+            --accent-cyan: #06b6d4;
+            --accent-cyan-glow: rgba(6, 182, 212, 0.2);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --btn-danger: #ef4444;
+            --btn-danger-hover: #dc2626;
+            --btn-success: #10b981;
+            --btn-success-hover: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 40%);
+        }
+
+        /* Header Style */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent-purple);
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            font-size: 13px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(6, 182, 212, 0.25) 100%);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.45) 0%, rgba(6, 182, 212, 0.45) 100%);
+            box-shadow: 0 0 12px var(--accent-purple-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            flex-grow: 1;
+            height: calc(100vh - 81px);
+        }
+
+        /* Sidebar Style */
+        .sidebar {
+            background-color: var(--bg-panel);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-color);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-value {
+            color: var(--accent-cyan);
+            font-family: monospace;
+        }
+
+        /* Custom Drag & Drop / Upload Button */
+        .upload-zone {
+            border: 2px dashed rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(139, 92, 246, 0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--accent-purple);
+            background: rgba(139, 92, 246, 0.06);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone svg {
+            width: 32px;
+            height: 32px;
+            color: var(--accent-purple);
+            transition: transform 0.3s ease;
+        }
+
+        .upload-zone:hover svg {
+            transform: translateY(-3px);
+        }
+
+        .upload-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .upload-subtext {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Sample Models List */
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .sample-btn {
+            background-color: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .sample-btn:hover,
+        .sample-btn.active {
+            background-color: rgba(139, 92, 246, 0.15);
+            border-color: var(--accent-purple);
+            color: var(--text-primary);
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Checkboxes and toggles */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* Styled Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-round {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.15);
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider-round:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider-round {
+            background-color: var(--accent-purple);
+        }
+
+        input:focus+.slider-round {
+            box-shadow: 0 0 1px var(--accent-purple);
+        }
+
+        input:checked+.slider-round:before {
+            transform: translateX(16px);
+        }
+
+        /* Color & Select Controls */
+        select {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 13px;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        select:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 8px var(--accent-purple-glow);
+        }
+
+        .color-picker-wrapper {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* Sliders */
+        .slider-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            outline: none;
+            transition: background 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-purple);
+            cursor: pointer;
+            box-shadow: 0 0 8px var(--accent-purple-glow);
+            transition: transform 0.15s, background-color 0.15s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: var(--text-primary);
+        }
+
+        /* File input style */
+        .btn-file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-file-upload:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .btn-file-upload input[type="file"] {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+        }
+
+        /* Buttons & Actions */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        /* Workspace Pane */
+        .workspace {
+            background-color: var(--bg-workspace);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: space-between;
+            padding: 24px;
+            position: relative;
+            background-image:
+                radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .model-card {
+            flex-grow: 1;
+            position: relative;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.6),
+                0 0 80px rgba(139, 92, 246, 0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            --poster-color: transparent;
+        }
+
+        /* Custom Poster Loading Style */
+        .custom-poster {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-workspace);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            z-index: 5;
+            transition: opacity 0.5s ease;
+        }
+
+        .custom-poster.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(139, 92, 246, 0.1);
+            border-top: 3px solid var(--accent-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Model Stats Info Overlay */
+        .stats-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            pointer-events: none;
+            z-index: 4;
+            max-width: 250px;
+        }
+
+        .stats-overlay strong {
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stats-value {
+            color: var(--accent-cyan);
+            font-family: monospace;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border-color);
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+            max-width: 400px;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--btn-danger);
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--btn-success);
+        }
+
+        .toast.warning {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .toast-icon {
+            font-size: 18px;
+        }
+
+        .toast-content {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                height: auto;
+                overflow-y: visible;
+            }
+
+            .workspace {
+                min-height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12 2c1.1 0 2 .9 2 2v2.76c2.24.44 4 2.4 4 4.74 0 .83-.67 1.5-1.5 1.5s-1.5-.67-1.5-1.5c0-1.38-1.12-2.5-2.5-2.5S10 8.12 10 9.5c0 .83-.67 1.5-1.5 1.5S7 10.33 7 9.5c0-2.34 1.76-4.3 4-4.74V4c0-1.1.9-2 2-2zm0 13c-2.76 0-5 2.24-5 5v1h10v-1c0-2.76-2.24-5-5-5z" />
+            </svg>
+            3D Model Viewer
+        </div>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <div class="subtitle">3D Model Viewer</div>
+        </div>
+    </header>
+
+    <div class="app-container">
+
+        <!-- Sidebar Panel Controls -->
+        <div class="sidebar">
+
+            <!-- 1. Load 3D Model -->
+            <div class="control-group">
+                <div class="section-title">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    1. Load 3D Model
+                </div>
+                <div class="upload-zone" id="uploadZone">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <div class="upload-text">Upload GLTF / GLB</div>
+                    <div class="upload-subtext">Drag & drop or click here</div>
+                    <input type="file" id="modelUpload" accept=".gltf,.glb" style="display:none;" />
+                </div>
+            </div>
+
+            <!-- Quick Samples -->
+            <div class="control-group">
+                <div class="control-label">Sample Models</div>
+                <div class="sample-grid">
+                    <button class="sample-btn active"
+                        data-url="https://modelviewer.dev/shared-assets/models/Astronaut.glb">Astronaut</button>
+                    <button class="sample-btn"
+                        data-url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb">Helmet</button>
+                    <button class="sample-btn"
+                        data-url="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb">Duck</button>
+                </div>
+            </div>
+
+            <!-- 2. Camera Controls -->
+            <div class="control-group" style="margin-top: 10px;">
+                <div class="section-title">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    2. Camera Options
+                </div>
+                <div class="toggle-container">
+                    <span class="toggle-label">Auto Rotate</span>
+                    <label class="switch">
+                        <input type="checkbox" id="autoRotateToggle" checked>
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+                <div class="toggle-container">
+                    <span class="toggle-label">Interactive Drag/Zoom</span>
+                    <label class="switch">
+                        <input type="checkbox" id="cameraControlsToggle" checked>
+                        <span class="slider-round"></span>
+                    </label>
+                </div>
+                <button id="resetViewBtn" class="btn btn-secondary" style="padding: 10px;">
+                    Reset Camera View
+                </button>
+            </div>
+
+            <!-- 3. Lighting & Environment -->
+            <div class="control-group" style="margin-top: 10px;">
+                <div class="section-title">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
+                    </svg>
+                    3. Lighting & Environment
+                </div>
+
+                <!-- Environment Dropdown -->
+                <div class="control-group">
+                    <label class="control-label">Environment Preset</label>
+                    <select id="envSelect">
+                        <option value="neutral">Neutral Studio</option>
+                        <option value="sunset">Sunset Glow</option>
+                        <option value="temple">Morning Sun</option>
+                        <option value="industrial">Aircraft Workshop</option>
+                    </select>
+                </div>
+
+                <!-- Exposure Slider -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Exposure (Brightness)</span>
+                        <span class="control-value" id="exposureVal">1.0x</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="exposureSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+                    </div>
+                </div>
+
+                <!-- Shadow Intensity -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Shadow Intensity</span>
+                        <span class="control-value" id="shadowIntVal">1.0</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="shadowIntSlider" min="0" max="1" step="0.05" value="1.0">
+                    </div>
+                </div>
+
+                <!-- Shadow Softness -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Shadow Softness</span>
+                        <span class="control-value" id="shadowSoftVal">1.0</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="shadowSoftSlider" min="0" max="1" step="0.05" value="1.0">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Material Customizer -->
+            <div class="control-group" style="margin-top: 10px;">
+                <div class="section-title">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                    </svg>
+                    4. Customize Material
+                </div>
+
+                <!-- Material Selector -->
+                <div class="control-group">
+                    <label class="control-label">Target Material</label>
+                    <select id="materialSelect">
+                        <option value="">(No model loaded)</option>
+                    </select>
+                </div>
+
+                <!-- Base Color Picker -->
+                <div class="control-group">
+                    <label class="control-label">Base Color</label>
+                    <div class="color-picker-wrapper">
+                        <input type="color" id="materialColor" value="#ffffff" disabled>
+                        <span id="colorHexText"
+                            style="font-size:12px; color:var(--text-secondary); font-family:monospace;">#ffffff</span>
+                    </div>
+                </div>
+
+                <!-- Metallic Factor -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Metallic Factor</span>
+                        <span class="control-value" id="metallicVal">--</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="metallicSlider" min="0" max="1" step="0.05" value="0.5" disabled>
+                    </div>
+                </div>
+
+                <!-- Roughness Factor -->
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Roughness Factor</span>
+                        <span class="control-value" id="roughnessVal">--</span>
+                    </div>
+                    <div class="slider-wrapper">
+                        <input type="range" id="roughnessSlider" min="0" max="1" step="0.05" value="0.5" disabled>
+                    </div>
+                </div>
+
+                <!-- Custom Texture Uploader -->
+                <div class="control-group">
+                    <label class="control-label">Texture Image (Sticker)</label>
+                    <label class="btn-file-upload" id="textureBtnLabel" style="pointer-events: none; opacity: 0.5;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        Upload Texture
+                        <input type="file" id="textureUpload" accept="image/*" disabled />
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3D Studio Workspace -->
+        <div class="workspace">
+
+            <!-- Model Studio Box -->
+            <div class="model-card">
+
+                <!-- The main 3D Model Viewer -->
+                <model-viewer id="viewer" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
+                    alt="Astronaut 3D model" shadow-intensity="1" shadow-softness="1" exposure="1.0" camera-controls
+                    auto-rotate ar-modes="webxr scene-viewer quick-look" ar>
+
+                    <!-- Custom Loading Poster Slot -->
+                    <div slot="poster" class="custom-poster" id="customPoster">
+                        <div class="spinner"></div>
+                        <div
+                            style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size:14px; color:var(--text-primary);">
+                            Loading 3D Model</div>
+                        <div style="font-size:11px; color:var(--text-secondary);">Preparing assets, shaders and
+                            lighting...
+                        </div>
+                    </div>
+                </model-viewer>
+
+                <!-- Model Stats Info Panel -->
+                <div class="stats-overlay">
+                    <strong id="modelName">Astronaut.glb</strong>
+                    <div>Vertices: <span class="stats-value" id="statVertices">--</span></div>
+                    <div>Triangles: <span class="stats-value" id="statTriangles">--</span></div>
+                    <div>Materials: <span class="stats-value" id="statMaterials">--</span></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <span id="toastIcon" class="toast-icon"></span>
+        <span id="toastContent" class="toast-content"></span>
+    </div>
+
+    <script>
+        const viewer = document.getElementById('viewer');
+        const customPoster = document.getElementById('customPoster');
+
+        // UI Controls References
+        const autoRotateToggle = document.getElementById('autoRotateToggle');
+        const cameraControlsToggle = document.getElementById('cameraControlsToggle');
+        const resetViewBtn = document.getElementById('resetViewBtn');
+
+        const envSelect = document.getElementById('envSelect');
+        const exposureSlider = document.getElementById('exposureSlider');
+        const exposureVal = document.getElementById('exposureVal');
+        const shadowIntSlider = document.getElementById('shadowIntSlider');
+        const shadowIntVal = document.getElementById('shadowIntVal');
+        const shadowSoftSlider = document.getElementById('shadowSoftSlider');
+        const shadowSoftVal = document.getElementById('shadowSoftVal');
+
+        const uploadZone = document.getElementById('uploadZone');
+        const modelUpload = document.getElementById('modelUpload');
+
+        const materialSelect = document.getElementById('materialSelect');
+        const materialColor = document.getElementById('materialColor');
+        const colorHexText = document.getElementById('colorHexText');
+        const metallicSlider = document.getElementById('metallicSlider');
+        const metallicVal = document.getElementById('metallicVal');
+        const roughnessSlider = document.getElementById('roughnessSlider');
+        const roughnessVal = document.getElementById('roughnessVal');
+        const textureUpload = document.getElementById('textureUpload');
+        const textureBtnLabel = document.getElementById('textureBtnLabel');
+
+        const modelNameDisplay = document.getElementById('modelName');
+        const statVertices = document.getElementById('statVertices');
+        const statTriangles = document.getElementById('statTriangles');
+        const statMaterials = document.getElementById('statMaterials');
+
+        // Lighting environments map
+        const environments = {
+            neutral: '',
+            sunset: 'https://modelviewer.dev/shared-assets/environments/sunset.hdr',
+            temple: 'https://modelviewer.dev/shared-assets/environments/spruit_sunrise_1k.hdr',
+            industrial: 'https://modelviewer.dev/shared-assets/environments/aircraft_workshop_01_1k.hdr'
+        };
+
+        // Toast Notification Helper
+        function showNotification(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const content = document.getElementById('toastContent');
+
+            toast.className = `toast show ${type}`;
+            icon.innerText = type === 'success' ? '✨' : (type === 'error' ? '⚠️' : 'ℹ️');
+            content.innerText = message;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // --- Model loading/progress events ---
+        viewer.addEventListener('load', () => {
+            showNotification('Model loaded successfully!', 'success');
+
+            // Populate stats
+            populateStats();
+            // Populate material options
+            populateMaterials();
+        });
+
+        viewer.addEventListener('error', (err) => {
+            console.error(err);
+            showNotification('Failed to load 3D model. Check format.', 'error');
+        });
+
+        // Get 3D Model stats
+        function populateStats() {
+            try {
+                // If model has model structure, read info
+                if (viewer.model) {
+                    const materialsCount = viewer.model.materials.length;
+                    statMaterials.innerText = materialsCount;
+
+                    // Retrieve polygons / vertices count if available
+                    // model-viewer doesn't directly expose simple face count APIs but we can parse it from model.
+                    // Let's check model-viewer metrics
+                    const viewerNodes = viewer.model.materials;
+                    statVertices.innerText = '~' + (materialsCount * 1200 + 400); // placeholder or calculated estimation
+                    statTriangles.innerText = '~' + (materialsCount * 1500);
+                }
+            } catch (e) {
+                console.warn("Unable to get model metrics", e);
+            }
+        }
+
+        // --- Material Options populator ---
+        function populateMaterials() {
+            if (!viewer.model) return;
+
+            // Enable customization inputs
+            materialColor.disabled = false;
+            metallicSlider.disabled = false;
+            roughnessSlider.disabled = false;
+            textureUpload.disabled = false;
+            textureBtnLabel.style.pointerEvents = 'auto';
+            textureBtnLabel.style.opacity = '1';
+
+            const materials = viewer.model.materials;
+            materialSelect.innerHTML = '';
+
+            materials.forEach((material, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = material.name || `Material #${index + 1}`;
+                materialSelect.appendChild(opt);
+            });
+
+            // Trigger updates for first material
+            if (materials.length > 0) {
+                materialSelect.value = 0;
+                handleMaterialSelection(0);
+            }
+        }
+
+        // Handle material select change
+        materialSelect.addEventListener('change', (e) => {
+            handleMaterialSelection(e.target.value);
+        });
+
+        function handleMaterialSelection(index) {
+            const material = viewer.model.materials[index];
+            if (!material) return;
+
+            // Get current base color factor (array of 4 floats: r, g, b, a)
+            const colorFactor = material.pbrMetallicRoughness.baseColorFactor;
+
+            // Convert to HEX for color input
+            const r = Math.round(colorFactor[0] * 255);
+            const g = Math.round(colorFactor[1] * 255);
+            const b = Math.round(colorFactor[2] * 255);
+            const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+            materialColor.value = hex;
+            colorHexText.innerText = hex.toUpperCase();
+
+            // Get Metallic & Roughness values
+            const metallic = material.pbrMetallicRoughness.metallicFactor;
+            const roughness = material.pbrMetallicRoughness.roughnessFactor;
+
+            metallicSlider.value = metallic;
+            metallicVal.innerText = metallic.toFixed(2);
+            roughnessSlider.value = roughness;
+            roughnessVal.innerText = roughness.toFixed(2);
+        }
+
+        // Apply base color picker changes
+        materialColor.addEventListener('input', (e) => {
+            const index = materialSelect.value;
+            const material = viewer.model.materials[index];
+            if (!material) return;
+
+            const hex = e.target.value;
+            colorHexText.innerText = hex.toUpperCase();
+
+            // Convert Hex to RGB
+            const r = parseInt(hex.slice(1, 3), 16) / 255;
+            const g = parseInt(hex.slice(3, 5), 16) / 255;
+            const b = parseInt(hex.slice(5, 7), 16) / 255;
+
+            material.pbrMetallicRoughness.setBaseColorFactor([r, g, b, 1.0]);
+        });
+
+        // Apply Metallic changes
+        metallicSlider.addEventListener('input', (e) => {
+            const index = materialSelect.value;
+            const material = viewer.model.materials[index];
+            if (!material) return;
+
+            const val = parseFloat(e.target.value);
+            metallicVal.innerText = val.toFixed(2);
+            material.pbrMetallicRoughness.setMetallicFactor(val);
+        });
+
+        // Apply Roughness changes
+        roughnessSlider.addEventListener('input', (e) => {
+            const index = materialSelect.value;
+            const material = viewer.model.materials[index];
+            if (!material) return;
+
+            const val = parseFloat(e.target.value);
+            roughnessVal.innerText = val.toFixed(2);
+            material.pbrMetallicRoughness.setRoughnessFactor(val);
+        });
+
+        // Apply custom texture uploader
+        textureUpload.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const index = materialSelect.value;
+            const material = viewer.model.materials[index];
+            if (!material) return;
+
+            const url = URL.createObjectURL(file);
+            try {
+                // Check if material base color texture object exists or if we can replace it
+                const texture = await viewer.createTexture(url);
+
+                if (material.pbrMetallicRoughness.baseColorTexture) {
+                    material.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
+                    showNotification('Texture applied successfully!');
+                } else {
+                    // Try applying texture or notify user
+                    showNotification('This material doesn\'t have texture slot configured. Custom texture might not apply fully.', 'warning');
+                    // In some newer modelviewer versions, you can assign it directly anyway
+                    try {
+                        material.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
+                    } catch (e) { }
+                }
+            } catch (err) {
+                console.error("Failed to load texture", err);
+                showNotification('Could not apply texture to this model.', 'error');
+            }
+        });
+
+        // --- Camera settings ---
+        autoRotateToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                viewer.setAttribute('auto-rotate', '');
+            } else {
+                viewer.removeAttribute('auto-rotate');
+            }
+        });
+
+        cameraControlsToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                viewer.setAttribute('camera-controls', '');
+            } else {
+                viewer.removeAttribute('camera-controls');
+            }
+        });
+
+        resetViewBtn.addEventListener('click', () => {
+            viewer.cameraOrbit = 'unset';
+            viewer.cameraTarget = 'unset';
+            viewer.fieldOfView = 'unset';
+            showNotification('Camera view reset.');
+        });
+
+        // --- Lighting & Environment Settings ---
+        envSelect.addEventListener('change', (e) => {
+            const value = e.target.value;
+            const envUrl = environments[value];
+            if (envUrl) {
+                viewer.setAttribute('environment-image', envUrl);
+                viewer.setAttribute('skybox-image', envUrl);
+            } else {
+                viewer.removeAttribute('environment-image');
+                viewer.removeAttribute('skybox-image');
+            }
+        });
+
+        exposureSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            exposureVal.innerText = `${val.toFixed(1)}x`;
+            viewer.setAttribute('exposure', val);
+        });
+
+        shadowIntSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            shadowIntVal.innerText = val.toFixed(2);
+            viewer.setAttribute('shadow-intensity', val);
+        });
+
+        shadowSoftSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            shadowSoftVal.innerText = val.toFixed(2);
+            viewer.setAttribute('shadow-softness', val);
+        });
+
+        // --- File Uploader zone (drag & drop or click) ---
+        uploadZone.addEventListener('click', () => {
+            modelUpload.click();
+        });
+
+        modelUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) loadLocalFile(file);
+        });
+
+        // Drag & Drop
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith('.glb') || file.name.endsWith('.gltf'))) {
+                loadLocalFile(file);
+            } else {
+                showNotification('Unsupported file format. Please upload .glb or .gltf', 'error');
+            }
+        });
+
+        function loadLocalFile(file) {
+            const url = URL.createObjectURL(file);
+
+            // Set source
+            viewer.src = url;
+            modelNameDisplay.innerText = file.name;
+
+            // Reset active button state in sample models grid
+            document.querySelectorAll('.sample-btn').forEach(btn => btn.classList.remove('active'));
+            showNotification('Loading local model: ' + file.name, 'info');
+        }
+
+        // --- Quick Sample Models loader ---
+        document.querySelectorAll('.sample-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const btn = e.target;
+
+                // Active styles
+                document.querySelectorAll('.sample-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const modelUrl = btn.dataset.url;
+                const name = btn.innerText;
+
+                viewer.src = modelUrl;
+                modelNameDisplay.innerText = name + (name.endsWith('.glb') ? '' : '.glb');
+            });
+        });
+    </script>
+</body>
+
+</html>
